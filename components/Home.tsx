@@ -55,8 +55,7 @@ export function Home() {
             defaults: { ease: "none" },
           })
           .to(".hero-name", { y: -65, opacity: 0.2 }, 0)
-          .to(".hero-portrait", { opacity: 0.65 }, 0)
-          .to(".hero-meta", { opacity: 0, y: -20 }, 0);
+          .to(".portrait", { opacity: 0.65 }, 0);
       });
       let cancelled = false;
       document.fonts.ready.then(() => {

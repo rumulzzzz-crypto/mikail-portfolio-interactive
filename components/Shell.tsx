@@ -179,7 +179,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       </a>
       <header className="header">
         <Link
-          href="/"
+          href="/#main"
           className="brand"
           aria-label="Микаил Дадашов — на главную"
         >
