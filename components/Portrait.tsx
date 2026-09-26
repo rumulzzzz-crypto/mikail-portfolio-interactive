@@ -1,9 +1,28 @@
 "use client";
 import { useEffects } from "@/lib/effects";
-import { useEffect, useRef } from "react";
-/** Original photo reveal; independent of the Originkit particle field. */
+import CursorRingField from "./originkit/ui/cursor-ring-field";
+import { useEffect, useRef, useState, useCallback } from "react";
+/** Photo reveal driven by the original Originkit ring’s rendered centre. */
 export function Portrait() {
   const animated = useEffects();
+  const [finePointer, setFinePointer] = useState(false);
+  const ring = useRef({ x: 0, y: 0, radius: 200, active: false });
+  const wakeReveal = useRef(() => {});
+  const onRingFrame = useCallback(
+    (frame: { x: number; y: number; radius: number; active: boolean }) => {
+      const wasActive = ring.current.active;
+      ring.current = frame;
+      if (frame.active || wasActive) wakeReveal.current();
+    },
+    [],
+  );
+  useEffect(() => {
+    const mq = matchMedia("(hover:hover) and (pointer:fine)");
+    const sync = () => setFinePointer(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = canvasRef.current,
@@ -24,11 +43,7 @@ export function Portrait() {
       aliveUntil = 0,
       width = 0,
       height = 0;
-    let tx = 0,
-      ty = 0,
-      x = 0,
-      y = 0,
-      inside = false;
+
     const image = new Image();
     image.src = "/images/hero-wide.webp";
     const enabled = () =>
@@ -45,10 +60,9 @@ export function Portrait() {
       m.globalCompositeOperation = "destination-out";
       m.fillStyle = `rgba(0,0,0,${1 - Math.exp(-dt / 210)})`;
       m.fillRect(0, 0, width, height);
+      const { x, y, radius: ringRadius, active: inside } = ring.current;
       if (inside) {
-        x += (tx - x) * (1 - Math.exp(-dt / 75));
-        y += (ty - y) * (1 - Math.exp(-dt / 75));
-        const radius = Math.min(220, width * 0.22);
+        const radius = Math.min(width * 0.38, ringRadius * 0.9);
         const g = m.createRadialGradient(x, y, 0, x, y, radius);
         g.addColorStop(0, "rgba(255,255,255,.38)");
         g.addColorStop(0.45, "rgba(255,255,255,.22)");
@@ -88,26 +102,10 @@ export function Portrait() {
       clear();
       wake();
     };
-    const move = (e: PointerEvent) => {
-      if (!enabled()) return;
-      const r = host.getBoundingClientRect();
-      tx = e.clientX - r.left;
-      ty = e.clientY - r.top;
-      if (!inside) {
-        x = tx;
-        y = ty;
-      }
-      inside = true;
-      wake();
-    };
-    const leave = () => {
-      inside = false;
-      wake();
-    };
     const stop = () => {
       cancelAnimationFrame(frame);
       frame = 0;
-      inside = false;
+      ring.current.active = false;
       clear();
     };
     const visibility = () => {
@@ -128,8 +126,7 @@ export function Portrait() {
       if (!visible) stop();
     });
     io.observe(host);
-    host.addEventListener("pointermove", move as EventListener);
-    host.addEventListener("pointerleave", leave);
+    wakeReveal.current = wake;
     document.addEventListener("visibilitychange", visibility);
     media.addEventListener("change", stop);
     fine.addEventListener("change", stop);
@@ -139,8 +136,7 @@ export function Portrait() {
       image.onload = null;
       ro.disconnect();
       io.disconnect();
-      host.removeEventListener("pointermove", move as EventListener);
-      host.removeEventListener("pointerleave", leave);
+      wakeReveal.current = () => {};
       document.removeEventListener("visibilitychange", visibility);
       media.removeEventListener("change", stop);
       fine.removeEventListener("change", stop);
@@ -157,6 +153,18 @@ export function Portrait() {
       />
       <canvas ref={canvasRef} aria-hidden="true" className="photo-reveal" />
       <div className="portrait-shade" />
+      {animated && finePointer && (
+        <CursorRingField
+          background="transparent"
+          colors={["#d9ffae", "#b6ff43", "#425c32"]}
+          density={300}
+          dotSize={120}
+          speed={6}
+          ring={{ radius: 8, width: 5, push: 45, turbulence: 75 }}
+          onRingFrame={onRingFrame}
+          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+        />
+      )}
     </div>
   );
 }

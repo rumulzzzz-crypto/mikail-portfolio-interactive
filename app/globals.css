@@ -1815,3 +1815,7 @@ html {
 body {
   overflow-x: clip;
 }
+
+/* Original Originkit field, above the photographic shading but below hero text. */
+.portrait .ring-field canvas{opacity:.88;object-fit:fill;transition:none;filter:none}
+.ring-field{pointer-events:none;mask-image:linear-gradient(0deg,transparent,#000 15%,#000 85%,transparent)}
