@@ -1,4 +1,5 @@
 @import "lenis/dist/lenis.css";
+@import "./toolbox-galaxy.css";
 :root {
   --bg: #090a08;
   --ink: #f0f1e9;

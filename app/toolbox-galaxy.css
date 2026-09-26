@@ -1,0 +1,98 @@
+/* The tools share the site's typography; their cutouts echo the reference's panels. */
+.about .toolbox {
+  --tool-green: #a8f333;
+  --tool-ink: #152008;
+  background: var(--tool-green);
+  color: var(--tool-ink);
+  margin: 0 calc(-1 * var(--pad)) 0;
+  padding: 34px var(--pad) 38px;
+}
+.toolbox-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin-bottom: 28px; }
+.toolbox-heading h3 { font-family: var(--body); font-size: 15px; font-weight: 600; margin: 0; }
+.toolbox-heading > span { font-family: var(--display); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.toolbox-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(225px, 19vw));
+  background: repeating-linear-gradient(90deg, #20330a19 0 1px, transparent 1px 25%);
+  border-right: 1px solid #20330a19;
+}
+.tool-reveal { min-width: 0; position: relative; padding: 1px; }
+.tool-figma { grid-area: 1 / 1; }
+.tool-codex { grid-area: 1 / 3; }
+.tool-photoshop { grid-area: 2 / 2; }
+.tool-higgsfield { grid-area: 2 / 4; }
+.tool-tile {
+  height: 100%; position: relative; padding: 22px 24px;
+  background: #8aca2b;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%, 0 65%, 12px calc(65% - 12px), 12px calc(25% + 12px), 0 25%);
+  box-shadow: inset 0 0 0 2px #172b1633;
+  transition: background .35s, color .35s;
+}
+.tool-tile h4 { font-family: var(--display); font-size: 17px; text-transform: uppercase; letter-spacing: .12em; text-align: right; margin: 0; font-weight: 500; }
+.tool-mark { position: absolute; width: clamp(94px, 8.5vw, 150px); height: auto; left: 18px; bottom: 55px; transform-origin: center; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.tool-tile p { position: absolute; bottom: 18px; left: 24px; right: 24px; font-size: 12px; line-height: 1.45; margin: 0; max-width: 175px; }
+.tool-corner { position: absolute; bottom: 14px; right: 15px; opacity: .5; }
+.toolbox-note { grid-area: 1 / 4; align-self: center; font-family: var(--display); font-size: clamp(23px, 2.8vw, 42px); line-height: 1.14; letter-spacing: -.025em; margin: 0 24px; }
+.toolbox-note span { color: #4b730a; }
+.toolbox-sign { grid-area: 2 / 1; align-self: end; padding: 28px 20px; color: #5d13d2; font-family: var(--display); font-size: 64px; line-height: 1; letter-spacing: -.08em; }
+.toolbox-sign span { display: block; margin-top: 20px; font-family: var(--body); font-size: 11px; letter-spacing: 0; color: var(--tool-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .tool-tile:hover { background: #6118d9; color: #f1ffd9; }
+  html[data-effects="on"] .tool-tile:hover .tool-mark { transform: translate(6px,-4px) rotate(-4deg) scale(1.055); }
+  html[data-effects="on"] .contact-universe:has(.contact-cta:hover) .galaxy-stage { transform: translateY(-6px); }
+}
+.contact .contact-universe { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 16px; padding: 50px 0 36px; }
+.contact .contact-universe .contact-cta { font-size: clamp(62px, 7.8vw, 134px); margin: 0; z-index: 1; }
+.contact-cta:focus-visible .contact-outline { color: var(--acid); }
+.contact:has(.contact-universe) { background: #000; }
+.galaxy { margin: 0; min-width: 0; align-self: center; }
+.galaxy-stage { position: relative; width: 100%; aspect-ratio: 1.25; background: #000; overflow: hidden; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+.galaxy-poster { position: absolute; width: 100%; height: 100%; object-fit: contain; inset: 0; }
+.galaxy-viewer { position: absolute; width: 100%; height: 100%; inset: 0; border: 0; opacity: 0; pointer-events: none; transition: opacity .8s; }
+.galaxy-viewer.is-ready { opacity: 1; }
+.galaxy-stage[data-interactive="true"] .galaxy-viewer { pointer-events: auto; }
+.galaxy-controls { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; margin-top: 16px; }
+.galaxy-label { font-family: var(--display); text-transform: uppercase; letter-spacing: .13em; font-size: 15px; color: var(--acid); }
+.galaxy-label span { margin-left: 8px; }
+.galaxy-controls button { font-size: 12px; padding: 6px 0; border-bottom: 1px solid #687258; }
+.galaxy-controls button:hover { color: var(--acid); }
+.galaxy-status { font-size: 11px; color: var(--muted); }
+.galaxy-credit { font-size: 10px; line-height: 1.8; color: #9ca591; margin-top: 10px; }
+.galaxy-credit a { text-underline-offset: 3px; text-decoration: underline; }
+.galaxy-help { font-size: 11px; line-height: 1.6; color: var(--muted); max-width: 360px; margin: 10px 0 0; }
+.galaxy button:focus-visible { outline: 2px solid var(--acid); outline-offset: 4px; }
+html[data-effects="off"] .tool-tile, html[data-effects="off"] .tool-mark,
+html[data-effects="off"] .galaxy-stage, html[data-effects="off"] .galaxy-viewer { transition: none; }
+@media (min-width: 1500px) {
+  .toolbox-grid { grid-template-rows: repeat(2, 285px); }
+}
+@media (max-width: 1000px) {
+  .toolbox-grid { grid-template-rows: repeat(2, 235px); }
+  .tool-tile { padding: 20px 16px; }
+  .tool-tile h4 { font-size: 14px; }
+  .tool-tile p { left: 19px; right: 16px; font-size: 11px; max-width: 135px; }
+  .toolbox-note { margin-left: 15px; }
+  .contact .contact-universe { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .contact .contact-universe .contact-cta { font-size: 7.8vw; }
+}
+@media (max-width: 700px) {
+  .about .toolbox { padding-top: 26px; padding-bottom: 26px; }
+  .toolbox-heading { align-items: flex-start; margin-bottom: 24px; gap: 18px; }
+  .toolbox-heading h3 { font-size: 14px; max-width: 175px; }
+  .toolbox-heading > span { font-size: 10px; max-width: 94px; text-align: right; }
+  .toolbox-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 200px 200px 100px; background-size: 200% 100%; }
+  .tool-figma { grid-area: 1 / 1; }
+  .tool-codex { grid-area: 1 / 2; }
+  .tool-photoshop { grid-area: 2 / 1; }
+  .tool-higgsfield { grid-area: 2 / 2; }
+  .toolbox-note { grid-area: 3 / 2; font-size: 19px; margin-left: 18px; }
+  .toolbox-sign { grid-area: 3 / 1; padding: 12px 18px; font-size: 40px; }
+  .toolbox-sign span { margin-top: 12px; font-size: 9px; }
+  .tool-mark { width: 88px; bottom: 54px; left: 15px; }
+  .tool-tile h4 { font-size: 13px; letter-spacing: .08em; }
+  .tool-tile p { font-size: 11px; bottom: 15px; }
+  .contact .contact-universe { display: flex; flex-direction: column; align-items: stretch; gap: 28px; padding: 38px 0 28px; }
+  .contact .contact-universe .contact-cta { font-size: clamp(55px, 13.6vw, 94px); }
+  .galaxy { width: 100%; }
+  .galaxy-stage { aspect-ratio: 1.25; }
+}

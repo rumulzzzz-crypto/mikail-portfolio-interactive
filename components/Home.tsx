@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Portrait } from "./Portrait";
+import { Toolbox } from "./Toolbox";
 import { Footer, Scramble } from "./Shell";
 import { projects } from "@/lib/projects";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -129,6 +130,7 @@ export function Home() {
             </p>
           </div>
         </div>
+        <Toolbox />
         <div className="disciplines">
           <span>Веб-дизайн</span>
           <span>Разработка</span>
