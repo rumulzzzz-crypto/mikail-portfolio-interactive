@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   description:
     "Персональное портфолио Микаила Дадашова. Веб-дизайн, разработка сайтов и интерфейсов. CUDGI и Brand Builder.",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icon.svg?v=md-2" },
   openGraph: {
     title: "Микаил Дадашов — веб-дизайн и разработка",
     description: "Сайты, интерфейсы и взаимодействия. Избранные проекты.",

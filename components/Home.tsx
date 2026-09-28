@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Portrait } from "./Portrait";
+import { BrandMark } from "./BrandMark";
 import { Toolbox } from "./Toolbox";
 import { Footer, Scramble } from "./Shell";
 import { projects } from "@/lib/projects";
@@ -112,7 +113,7 @@ export function Home() {
         </div>
         <div className="about-body">
           <span className="about-symbol" aria-hidden="true">
-            [ м/д ]
+            <BrandMark />
           </span>
           <h2 className="reveal">
             ХОРОШИЙ САЙТ

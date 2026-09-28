@@ -1820,3 +1820,14 @@ body {
 /* Static portrait stays legible when pointer animation is unavailable. */
 html[data-effects="off"] .portrait img { filter: brightness(.58) saturate(0); }
 @media (hover: none), (pointer: coarse) { .portrait img { filter: brightness(.58) saturate(0); } }
+
+/* Shared MD silhouette: lime on dark surfaces, purple in the tools panel. */
+.md-emblem { display: block; width: 100%; height: auto; flex-shrink: 0; }
+.brand-mark { display: block; width: 36px; padding-right: 0; flex-shrink: 0; }
+.about-symbol .md-emblem { width: 78px; }
+.toolbox-sign .md-emblem { width: 96px; }
+@media (max-width: 700px) {
+  .brand-mark { width: 30px; }
+  .about-symbol .md-emblem { width: 50px; }
+  .toolbox-sign .md-emblem { width: 54px; }
+}

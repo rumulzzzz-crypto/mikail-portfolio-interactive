@@ -16,6 +16,7 @@ import Lenis from "lenis";
 import { AudioControl } from "./Audio";
 import { ActionLink } from "./Interactions";
 import { Galaxy, GalaxyCredit } from "./Galaxy";
+import { BrandMark } from "./BrandMark";
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, useGSAP);
 
 export function Scramble({ children }: { children: string }) {
@@ -185,7 +186,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           aria-label="Микаил Дадашов — на главную"
         >
           <span className="brand-mark" aria-hidden="true">
-            м/д
+            <BrandMark />
           </span>
           <span>МИКАИЛ ДАДАШОВ</span>
         </Link>

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffects } from "@/lib/effects";
+import { BrandMark } from "./BrandMark";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -78,7 +79,7 @@ export function Toolbox() {
             </article>
           </div>
         ))}
-        <div className="toolbox-sign" aria-hidden="true">м/д<span>Идеи обретают форму.</span></div>
+        <div className="toolbox-sign" aria-hidden="true"><BrandMark /><span>Идеи обретают форму.</span></div>
       </div>
     </div>
   );
