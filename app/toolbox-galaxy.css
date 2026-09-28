@@ -39,30 +39,34 @@
 @media (hover: hover) and (pointer: fine) {
   .tool-tile:hover { background: #6118d9; color: #f1ffd9; }
   html[data-effects="on"] .tool-tile:hover .tool-mark { transform: translate(6px,-4px) rotate(-4deg) scale(1.055); }
-  html[data-effects="on"] .contact-universe:has(.contact-cta:hover) .galaxy-stage { transform: translateY(-6px); }
+
 }
-.contact .contact-universe { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 16px; padding: 50px 0 36px; }
-.contact .contact-universe .contact-cta { font-size: clamp(62px, 7.8vw, 134px); margin: 0; z-index: 1; }
+/* One uninterrupted cosmic section. No crop/mask is applied to the live viewer. */
+.contact:has(.contact-universe) {
+  position: relative; isolation: isolate; background: #000;
+  min-height: max(800px, 100svh); display: flex; flex-direction: column;
+  padding-top: 105px; padding-bottom: 140px;
+}
+.contact > :not(.galaxy) { position: relative; z-index: 1; }
+.contact .contact-universe { display: flex; align-items: center; flex: 1; padding: 40px 0 35px; min-height: 380px; }
+.contact .contact-universe .contact-cta { font-size: clamp(62px, 7.8vw, 134px); margin: 0; }
 .contact-cta:focus-visible .contact-outline { color: var(--acid); }
-.contact:has(.contact-universe) { background: #000; }
-.galaxy { margin: 0; min-width: 0; align-self: center; }
-.galaxy-stage { position: relative; width: 100%; aspect-ratio: 1.25; background: #000; overflow: hidden; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
-.galaxy-poster { position: absolute; width: 100%; height: 100%; object-fit: contain; inset: 0; }
-.galaxy-viewer { position: absolute; width: 100%; height: 100%; inset: 0; border: 0; opacity: 0; pointer-events: none; transition: opacity .8s; }
+.contact > .action-wrap { align-self: flex-start; }
+.galaxy { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; background: #000; }
+.galaxy-stars { position: absolute; inset: 0; opacity: .4;
+  background-image: radial-gradient(1px 1px at 19% 31%, #b6c3d7 90%, transparent), radial-gradient(1px 1px at 71% 67%, #ced7df 90%, transparent), radial-gradient(.7px .7px at 44% 12%, #768096 90%, transparent);
+  background-size: 233px 277px, 337px 311px, 173px 239px;
+}
+.galaxy-poster { position: absolute; width: min(94%, 1450px); height: auto; aspect-ratio: 720 / 405; right: -18%; top: 45%; transform: translateY(-50%); object-fit: contain;
+  mask-image: radial-gradient(ellipse 49% 48% at 50% 50%, #000 40%, transparent 100%);
+}
+.galaxy-live, .galaxy-viewer { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+.galaxy-viewer { opacity: 0; transition: opacity 1s; }
 .galaxy-viewer.is-ready { opacity: 1; }
-.galaxy-stage[data-interactive="true"] .galaxy-viewer { pointer-events: auto; }
-.galaxy-controls { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; margin-top: 16px; }
-.galaxy-label { font-family: var(--display); text-transform: uppercase; letter-spacing: .13em; font-size: 15px; color: var(--acid); }
-.galaxy-label span { margin-left: 8px; }
-.galaxy-controls button { font-size: 12px; padding: 6px 0; border-bottom: 1px solid #687258; }
-.galaxy-controls button:hover { color: var(--acid); }
-.galaxy-status { font-size: 11px; color: var(--muted); }
-.galaxy-credit { font-size: 10px; line-height: 1.8; color: #9ca591; margin-top: 10px; }
+.galaxy-credit { font-size: 10px; line-height: 1.8; color: #9ca591; padding: 0 130px 8px 0; }
 .galaxy-credit a { text-underline-offset: 3px; text-decoration: underline; }
-.galaxy-help { font-size: 11px; line-height: 1.6; color: var(--muted); max-width: 360px; margin: 10px 0 0; }
-.galaxy button:focus-visible { outline: 2px solid var(--acid); outline-offset: 4px; }
 html[data-effects="off"] .tool-tile, html[data-effects="off"] .tool-mark,
-html[data-effects="off"] .galaxy-stage, html[data-effects="off"] .galaxy-viewer { transition: none; }
+html[data-effects="off"] .galaxy-viewer { transition: none; }
 @media (min-width: 1500px) {
   .toolbox-grid { grid-template-rows: repeat(2, 285px); }
 }
@@ -72,7 +76,7 @@ html[data-effects="off"] .galaxy-stage, html[data-effects="off"] .galaxy-viewer 
   .tool-tile h4 { font-size: 14px; }
   .tool-tile p { left: 19px; right: 16px; font-size: 11px; max-width: 135px; }
   .toolbox-note { margin-left: 15px; }
-  .contact .contact-universe { grid-template-columns: 1fr 1fr; gap: 12px; }
+
   .contact .contact-universe .contact-cta { font-size: 7.8vw; }
 }
 @media (max-width: 700px) {
@@ -91,8 +95,8 @@ html[data-effects="off"] .galaxy-stage, html[data-effects="off"] .galaxy-viewer 
   .tool-mark { width: 88px; bottom: 54px; left: 15px; }
   .tool-tile h4 { font-size: 13px; letter-spacing: .08em; }
   .tool-tile p { font-size: 11px; bottom: 15px; }
-  .contact .contact-universe { display: flex; flex-direction: column; align-items: stretch; gap: 28px; padding: 38px 0 28px; }
+  .contact .contact-universe { padding: 180px 0 34px; min-height: 430px; align-items: flex-end; }
   .contact .contact-universe .contact-cta { font-size: clamp(55px, 13.6vw, 94px); }
-  .galaxy { width: 100%; }
-  .galaxy-stage { aspect-ratio: 1.25; }
+  .contact:has(.contact-universe) { min-height: max(840px, 100svh); }
+  .galaxy-poster { width: 150%; max-width: none; right: -50%; top: 28%; }
 }

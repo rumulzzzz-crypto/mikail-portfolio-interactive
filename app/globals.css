@@ -1348,7 +1348,7 @@ h3 {
   filter: brightness(0.48) saturate(0);
 }
 .portrait canvas.photo-reveal {
-  opacity: 0.64;
+  opacity: 0.88;
   transition: none;
 }
 .portrait-shade {
@@ -1817,6 +1817,6 @@ body {
   overflow-x: clip;
 }
 
-/* Original Originkit field, above the photographic shading but below hero text. */
-.portrait .ring-field canvas{opacity:.88;object-fit:fill;transition:none;filter:none}
-.ring-field{pointer-events:none;mask-image:linear-gradient(0deg,transparent,#000 15%,#000 85%,transparent)}
+/* Static portrait stays legible when pointer animation is unavailable. */
+html[data-effects="off"] .portrait img { filter: brightness(.58) saturate(0); }
+@media (hover: none), (pointer: coarse) { .portrait img { filter: brightness(.58) saturate(0); } }

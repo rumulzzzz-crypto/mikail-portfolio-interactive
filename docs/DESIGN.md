@@ -39,3 +39,10 @@ GSAP раскрывает карточки одной последователь
 Реальные адреса `/work/cudgi` и `/work/brand-builder` сохранены. На клике по карточке временная копия её изображения переходит в геометрию изображения кейса за 650 мс. Обычные модификаторы ссылок сохраняются. Есть очистка по завершению, истории, размонтированию и таймауту.
 
 В меню: анимация «Как в системе», «Полная», «Уменьшенная». По умолчанию уважается prefers-reduced-motion; явный выбор хранится локально. Настройки ОС не менялись. На touch-устройствах нет зависимости от наведения. Существующее синтезированное аудио и его запоминание сохранены; без действия посетителя оно не включается.
+
+## 2026-09-28 — first three refinement stages
+
+- Hero: remove Ring Field mounting entirely. Canvas 2D independently tracks a fine hover pointer, reveals the same unfiltered image through a feathered radial mask, and uses the base image's computed crop. Position follows with 150 ms smoothing; opacity enters in about 200 ms and fades over about 700 ms. A settled pointer does not keep the frame loop alive. Offscreen/hidden/unmount clears and stops the effect. Reduced motion/coarse pointer uses a brighter static photo. Logo, name color and hero timelines are unchanged.
+- Contact: one full-section cosmic canvas with foreground text and functioning contacts. The original Galaxy is composed to the right with Viewer API camera coordinates, not CSS scaling/cropping of the embed. Original animation loops at 0.35 speed. Mobile moves the galaxy above/right of the headline. The reduced-mode poster alone receives a feathered mask; it never rotates or pretends to be 3D.
+- Remove all application-owned viewer labels, buttons, loading/error notices and the old hover translation. Attribution moves to the footer. The Sketchfab watermark and its unhideable native hint remain; reserve clear space below the footer text. No hover camera transition, logo replacement or name recoloring in this iteration.
+- The service's native hint is the outstanding stage-2 limitation. Local rendering requires an official downloadable archive; no new runtime dependencies have been added.

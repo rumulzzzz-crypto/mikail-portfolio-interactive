@@ -28,3 +28,15 @@
 
 - Первичная ошибка запуска после cleanup в React Strict Mode устранена: ресурсы удаляются по отдельности, WebGL-контекст не теряется принудительно во время повторного mount.
 - WebGL-потеря/восстановление и физическое touch-устройство предусмотрены в коде, но искусственная потеря контекста и физический телефон в браузерной проверке не эмулировались.
+
+## 2026-09-28 — current implementation
+
+- Clean tree before work. Reviewed AGENTS and installed Next client-component documentation.
+- Existing Galaxy reached viewerready in Chrome today; original model page and standalone official embed also rendered. The previous remote blank-document failure did not reproduce. SDK/document loading and source/origin validation succeeded. The new preload is latched, so visibility and scrolling no longer unmount a pending scene.
+- Live scene: original Take 001 plays at 0.35 speed. Different screenshots show changed core/spiral orientation. Final-code reload reached data-playback=playing (official play callback); navigating to the hero reached data-playback=paused (official stop callback). Returning resumes without replacing the iframe. Hidden-document stop is implemented; physical background-tab CPU/FPS was not measured.
+- Chrome desktop 1440x900 and mobile width 390x844: no horizontal overflow; mobile galaxy is above/right of the call to action. Contacts remain foreground links and the decorative scene is inert. Keyboard Tab from the project-discussion link reaches Telegram, skipping the viewer.
+- Reduced mode: zero galaxy iframes and zero photo-reveal canvases; feathered original poster and stars remain, with readable contacts. No synthetic network failure was injected; fallback appearance was verified in reduced mode and error handling reviewed in code.
+- Hero: pointer on face visibly reveals natural details, moving to pipes follows smoothly; leaving through the header changes the reveal from fading to idle. No Ring Field element/render loop remains. The image crop matches the base layer, and existing hero scrolling is retained.
+- CUDGI navigation and return checked in reduced mode at mobile width; Brand Builder navigation and return checked in full mode. No captured application errors or warnings. Physical touch hardware and GPU performance were not measured.
+- pnpm typecheck and production build pass. No added packages.
+- Remaining: native Sketchfab click-and-hold hint persists despite the official ui_hint:0 option (documented Premium restriction). Its clear footer area is retained; no overlay or branding crop is used. Download button opens login. Stage 1 works; stage 2 remains partial pending official model archive for local rendering; stage 3 works.

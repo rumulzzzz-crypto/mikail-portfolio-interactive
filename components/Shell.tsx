@@ -15,7 +15,7 @@ import { useGSAP } from "@gsap/react";
 import Lenis from "lenis";
 import { AudioControl } from "./Audio";
 import { ActionLink } from "./Interactions";
-import { Galaxy } from "./Galaxy";
+import { Galaxy, GalaxyCredit } from "./Galaxy";
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, useGSAP);
 
 export function Scramble({ children }: { children: string }) {
@@ -271,6 +271,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 export function Footer() {
   return (
     <footer className="contact" id="contact">
+      <Galaxy />
       <div className="contact-top">
         <span className="eyebrow">Есть идея?</span>
         <span>Давайте сделаем её настоящей.</span>
@@ -289,7 +290,6 @@ export function Footer() {
         </span>
         <span className="contact-outline">КЛАССНОЕ.</span>
       </a>
-      <Galaxy />
       </div>
       <ActionLink href="https://t.me/rumul" external magnetic>
         Обсудить проект
@@ -308,6 +308,7 @@ export function Footer() {
         <span>Веб-дизайн и разработка</span>
         <span>Сделано с вниманием.</span>
       </div>
+      <GalaxyCredit />
     </footer>
   );
 }

@@ -1,170 +1,126 @@
 "use client";
 import { useEffects } from "@/lib/effects";
-import CursorRingField from "./originkit/ui/cursor-ring-field";
-import { useEffect, useRef, useState, useCallback } from "react";
-/** Photo reveal driven by the original Originkit ring’s rendered centre. */
+import { useEffect, useRef, useState } from "react";
+
+/** Reveal the same photo through a feathered mask; no particle renderer. */
 export function Portrait() {
   const animated = useEffects();
   const [finePointer, setFinePointer] = useState(false);
-  const ring = useRef({ x: 0, y: 0, radius: 200, active: false });
-  const wakeReveal = useRef(() => {});
-  const onRingFrame = useCallback(
-    (frame: { x: number; y: number; radius: number; active: boolean }) => {
-      const wasActive = ring.current.active;
-      ring.current = frame;
-      if (frame.active || wasActive) wakeReveal.current();
-    },
-    [],
-  );
-  useEffect(() => {
-    const mq = matchMedia("(hover:hover) and (pointer:fine)");
-    const sync = () => setFinePointer(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
-    const canvas = canvasRef.current,
-      host = canvas?.closest(".hero");
-    if (!canvas || !host) return;
+    const query = matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setFinePointer(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const host = canvas?.closest<HTMLElement>(".hero");
+    if (!animated || !finePointer || !canvas || !host) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const mask = document.createElement("canvas"),
-      m = mask.getContext("2d");
-    if (!m) return;
-    const media = matchMedia("(prefers-reduced-motion: reduce)"),
-      fine = matchMedia("(hover: hover) and (pointer: fine)");
-    let frame = 0,
-      visible = true,
-      disposed = false,
-      loaded = false,
-      last = 0,
-      aliveUntil = 0,
-      width = 0,
-      height = 0;
-
+    let frame = 0, last = 0, visible = true, loaded = false, disposed = false;
+    let width = 0, height = 0, x = 0, y = 0, targetX = 0, targetY = 0;
+    let clientX = 0, clientY = 0, opacity = 0, inside = false, px = .5, py = 0;
     const image = new Image();
-    image.src = "/images/hero-wide.webp";
-    const enabled = () =>
-      animated && fine.matches && !document.hidden && visible && loaded;
-    const clear = () => {
-      ctx.clearRect(0, 0, width, height);
-      m.clearRect(0, 0, width, height);
-    };
+    const enabled = () => visible && !document.hidden && loaded && !disposed;
+    const clear = () => ctx.clearRect(0, 0, width, height);
     const paint = (time: number) => {
       frame = 0;
-      if (!enabled() || disposed) return;
+      if (!enabled()) return;
       const dt = Math.min(50, time - last || 16);
       last = time;
-      m.globalCompositeOperation = "destination-out";
-      m.fillStyle = `rgba(0,0,0,${1 - Math.exp(-dt / 210)})`;
-      m.fillRect(0, 0, width, height);
-      const { x, y, radius: ringRadius, active: inside } = ring.current;
-      if (inside) {
-        const radius = Math.min(width * 0.38, ringRadius * 0.9);
-        const g = m.createRadialGradient(x, y, 0, x, y, radius);
-        g.addColorStop(0, "rgba(255,255,255,.38)");
-        g.addColorStop(0.45, "rgba(255,255,255,.22)");
-        g.addColorStop(1, "transparent");
-        m.globalCompositeOperation = "source-over";
-        m.fillStyle = g;
-        m.fillRect(x - radius, y - radius, radius * 2, radius * 2);
-        aliveUntil = time + 1200;
+      const follow = 1 - Math.exp(-dt / 150);
+      x += (targetX - x) * follow;
+      y += (targetY - y) * follow;
+      const goal = inside ? 1 : 0;
+      opacity += (goal - opacity) * (1 - Math.exp(-dt / (inside ? 65 : 140)));
+      clear();
+      if (opacity > .002) {
+        ctx.globalCompositeOperation = "source-over";
+        const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+        const dw = image.naturalWidth * scale, dh = image.naturalHeight * scale;
+        ctx.drawImage(image, (width - dw) * px, (height - dh) * py, dw, dh);
+        const radius = Math.min(240, Math.max(160, width * .155));
+        const mask = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        mask.addColorStop(0, `rgba(255,255,255,${opacity})`);
+        mask.addColorStop(.24, `rgba(255,255,255,${opacity * .86})`);
+        mask.addColorStop(.62, `rgba(255,255,255,${opacity * .32})`);
+        mask.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.globalCompositeOperation = "destination-in";
+        ctx.fillStyle = mask;
+        ctx.fillRect(0, 0, width, height);
       }
-      ctx.clearRect(0, 0, width, height);
-      ctx.globalCompositeOperation = "source-over";
-      const scale = Math.max(width / image.width, height / image.height);
-      const dw = image.width * scale,
-        dh = image.height * scale;
-      const pos = width < 600 ? 0.85 : 0.5;
-      ctx.drawImage(image, (width - dw) * pos, 0, dw, dh);
-      ctx.globalCompositeOperation = "destination-in";
-      ctx.drawImage(mask, 0, 0, width, height);
-      if (inside || time < aliveUntil) frame = requestAnimationFrame(paint);
-      else clear();
-    };
-    const wake = () => {
-      if (!frame && enabled()) {
-        last = 0;
+      if (Math.abs(goal - opacity) > .002 || Math.hypot(targetX - x, targetY - y) > .1) {
         frame = requestAnimationFrame(paint);
       }
+      canvas.dataset.flashlight = inside ? "active" : frame ? "fading" : "idle";
     };
-    const resize = () => {
-      const r = host.getBoundingClientRect();
-      width = Math.round(r.width);
-      height = Math.round(r.height);
-      const resolution = Math.min(1, 1920 / width, 1080 / height);
-      canvas.width = mask.width = Math.round(width * resolution);
-      canvas.height = mask.height = Math.round(height * resolution);
-      ctx.setTransform(resolution, 0, 0, resolution, 0, 0);
-      m.setTransform(resolution, 0, 0, resolution, 0, 0);
-      clear();
-      wake();
+    const wake = () => {
+      if (!frame && enabled()) { last = 0; frame = requestAnimationFrame(paint); }
     };
     const stop = () => {
-      cancelAnimationFrame(frame);
-      frame = 0;
-      ring.current.active = false;
-      clear();
+      cancelAnimationFrame(frame); frame = 0; inside = false; opacity = 0;
+      clear(); canvas.dataset.flashlight = "idle";
     };
-    const visibility = () => {
-      if (!enabled()) stop();
+    const track = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || !enabled()) return;
+      const rect = host.getBoundingClientRect();
+      clientX = event.clientX; clientY = event.clientY;
+      targetX = clientX - rect.left; targetY = clientY - rect.top;
+      if (!inside && opacity < .01) { x = targetX; y = targetY; }
+      inside = true; wake();
     };
-    image.onload = () => {
-      loaded = true;
-      resize();
+    const leave = () => { inside = false; wake(); };
+    const scroll = () => {
+      if (!inside) return;
+      const rect = host.getBoundingClientRect();
+      targetX = clientX - rect.left; targetY = clientY - rect.top;
+      inside = targetX >= 0 && targetX <= width && targetY >= 0 && targetY <= height;
+      wake();
     };
-    if (image.complete) {
-      loaded = true;
-      resize();
-    }
-    const ro = new ResizeObserver(resize);
-    ro.observe(host);
-    const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
+    const resize = () => {
+      const rect = host.getBoundingClientRect();
+      width = rect.width; height = rect.height;
+      if (!width || !height) return;
+      // Read the base image once per resize, never in the animation loop.
+      const position = getComputedStyle(canvas.previousElementSibling!).objectPosition.split(" ");
+      px = parseFloat(position[0]) / 100; py = parseFloat(position[1]) / 100;
+      const resolution = Math.min(1, 1920 / width, 1080 / height);
+      canvas.width = Math.round(width * resolution); canvas.height = Math.round(height * resolution);
+      ctx.setTransform(resolution, 0, 0, resolution, 0, 0);
+      stop();
+    };
+    image.onload = () => { loaded = true; resize(); };
+    image.src = "/images/hero-wide.webp";
+    if (image.complete && image.naturalWidth) { loaded = true; resize(); }
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(host);
+    const viewport = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
       if (!visible) stop();
     });
-    io.observe(host);
-    wakeReveal.current = wake;
+    viewport.observe(host);
+    const visibility = () => { if (document.hidden) stop(); };
+    host.addEventListener("pointermove", track, { passive: true });
+    host.addEventListener("pointerleave", leave);
+    window.addEventListener("scroll", scroll, { passive: true });
     document.addEventListener("visibilitychange", visibility);
-    media.addEventListener("change", stop);
-    fine.addEventListener("change", stop);
     return () => {
-      disposed = true;
-      stop();
-      image.onload = null;
-      ro.disconnect();
-      io.disconnect();
-      wakeReveal.current = () => {};
+      disposed = true; stop(); image.onload = null;
+      resizeObserver.disconnect(); viewport.disconnect();
+      host.removeEventListener("pointermove", track);
+      host.removeEventListener("pointerleave", leave);
+      window.removeEventListener("scroll", scroll);
       document.removeEventListener("visibilitychange", visibility);
-      media.removeEventListener("change", stop);
-      fine.removeEventListener("change", stop);
     };
-  }, [animated]);
-  return (
-    <div className="portrait">
-      <img
-        src="/images/hero-wide.webp"
-        width="1672"
-        height="941"
-        alt="Микаил Дадашов на фоне индустриальных труб"
-        fetchPriority="high"
-      />
-      <canvas ref={canvasRef} aria-hidden="true" className="photo-reveal" />
-      <div className="portrait-shade" />
-      {animated && finePointer && (
-        <CursorRingField
-          background="transparent"
-          colors={["#d9ffae", "#b6ff43", "#425c32"]}
-          density={300}
-          dotSize={120}
-          speed={6}
-          ring={{ radius: 8, width: 5, push: 45, turbulence: 75 }}
-          onRingFrame={onRingFrame}
-          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-        />
-      )}
-    </div>
-  );
+  }, [animated, finePointer]);
+
+  return <div className="portrait">
+    <img src="/images/hero-wide.webp" width="1672" height="941" alt="Микаил Дадашов на фоне индустриальных труб" fetchPriority="high" />
+    {animated && finePointer && <canvas ref={canvasRef} aria-hidden="true" className="photo-reveal" />}
+    <div className="portrait-shade" />
+  </div>;
 }
