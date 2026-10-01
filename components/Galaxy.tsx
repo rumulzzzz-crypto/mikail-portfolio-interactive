@@ -2,40 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useEffects } from "@/lib/effects";
-import { galaxyViewerDocument } from "@/lib/galaxy-viewer";
+import type { GalaxyController } from "@/lib/galaxy-renderer";
 
 function GalaxyViewer({ running, topView }: { running: boolean; topView: boolean }) {
-  const frame = useRef<HTMLIFrameElement>(null);
-  const [status, setStatus] = useState("loading");
-  const [playback, setPlayback] = useState("paused");
-  const [cameraView, setCameraView] = useState("default");
+  const root = useRef<HTMLDivElement>(null);
+  const controller = useRef<GalaxyController | null>(null);
+  const latest = useRef({ running, topView });
+  latest.current = { running, topView };
   useEffect(() => {
-    let finished = false;
-    const timeout = window.setTimeout(() => {
-      if (!finished) setStatus("error");
-    }, 45000);
-    const receive = (event: MessageEvent) => {
-      if (event.source !== frame.current?.contentWindow || event.origin !== location.origin || event.data?.type !== "portfolio-galaxy") return;
-      if (event.data.playback === "playing" || event.data.playback === "paused") setPlayback(event.data.playback);
-      if (event.data.camera === "top" || event.data.camera === "default") setCameraView(event.data.camera);
-      if (event.data.status === "ready" || event.data.status === "error") {
-        finished = true;
-        clearTimeout(timeout);
-        setStatus(event.data.status);
-      }
-    };
-    window.addEventListener("message", receive);
-    return () => { clearTimeout(timeout); window.removeEventListener("message", receive); };
+    const host = root.current;
+    if (!host) return;
+    let disposed = false;
+    host.dataset.status = "loading";
+    void import("@/lib/galaxy-renderer").then(({ createGalaxyRenderer }) => {
+      if (!disposed) controller.current = createGalaxyRenderer(host, latest.current);
+    }).catch(() => { if (!disposed) host.dataset.status = "error"; });
+    return () => { disposed = true; controller.current?.dispose(); controller.current = null; };
   }, []);
   useEffect(() => {
-    if (status === "ready") frame.current?.contentWindow?.postMessage({ type: "portfolio-galaxy-running", running, view: running && topView ? "top" : "default" }, location.origin);
-  }, [running, topView, status]);
-  return <div className="galaxy-live" data-status={status} data-running={status === "ready" && running} data-playback={playback} data-camera={cameraView}>
-    {status !== "error" && <iframe ref={frame} srcDoc={galaxyViewerDocument}
-      className={`galaxy-viewer${status === "ready" ? " is-ready" : ""}`}
-      title="Galaxy by 991519166" allow="autoplay" tabIndex={-1}
-      onError={() => setStatus("error")} />}
-  </div>;
+    controller.current?.update({ running, topView });
+  }, [running, topView]);
+  return <div ref={root} className="galaxy-live" data-running={running} />;
 }
 
 export function Galaxy({ topView = false }: { topView?: boolean }) {

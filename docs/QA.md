@@ -59,3 +59,13 @@
 - Hero flashlight again reaches active while pointing at the face; lime name retained. Keyboard project navigation and contact href checked. Full scene and reduced mode checked separately during the final audit.
 - Official model Download 3D Model again opens a Sketchfab login dialog. No archive available. ui_hint Premium restriction confirmed on official initialization documentation; stage 2 cannot be marked fully complete.
 - Production build and standalone typecheck pass. This change adds no dependencies.
+
+## 2026-10-02 — official local Galaxy (stage 2 resolved)
+
+- Signed-in Sketchfab account confirmed in the UI. Official GLB 2k downloaded through the model's download dialog. Binary contains source/author/license metadata, Galaxy and Sphere001, three embedded PNGs and original Take 001. SHA-256 and exact file size recorded in vendor/GALAXY.md.
+- Desktop 1440x900: local canvas reaches ready/playing. Compared successive default-view screenshots: spiral/core orientation and star positions change with Take 001. Near top view and return verified visually and with camera state; rapid repeated pointer entry/exit returns to default without queued moves. Keyboard focus also reaches top; Tab away returns.
+- Hero navigation reports paused/default; menu return reports playing/default with the existing canvas. Full-mode case transition to BRAND BUILDER and return works after the local scene was active. Reload/reduced-to-full loads the local model without a manual play control.
+- Mobile 390x844: galaxy remains above/right of readable text, no horizontal overflow, zero iframes and one local canvas. Reduced mode removes that canvas and retains the static poster. CUDGI/return works in reduced mode. Contacts retain their original hrefs. No captured application errors/warnings.
+- Drawing buffer is capped; offscreen stop verified. Hidden-document stop and resource disposal reviewed in code. This browser provider did not mark the document hidden when a new tab was created, so physical background-tab CPU/GPU, WebGL loss/restore and real touch hardware are not claimed as measured.
+- Original meshes/textures/animation preserved; bloom, exposure and star intensity tuned locally. This is the original asset, with locally adapted postprocessing rather than a claim of pixel-identical Sketchfab rendering.
+- No player UI, native hint, SDK request or iframe remains. Attribution kept in the footer. Stage 2 is no longer blocked by account/asset access.

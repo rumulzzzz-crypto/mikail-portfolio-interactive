@@ -60,3 +60,11 @@ GSAP раскрывает карточки одной последователь
 - Removed the desktop/tablet project offset and changed the two columns to equal widths. Shared 16:9 previews show the upper portion of each real interface without distorting the images; the full screenshots remain available in the cases. Mobile keeps natural image proportions and the existing vertical list spacing.
 - Fixed the partially visible lime case button below the preview: it is fully hidden at rest, appears on hover/focus, and remains visible on mobile/coarse pointers.
 - Prompt audit: original live Galaxy, full contact scene, independent flashlight, reversible camera, lime hero name and the approved vector MD remain implemented. Native Sketchfab hint is the remaining unmet requirement; official download was retried and opens login. Official initialization documentation again lists ui_hint as a Premium option. No replacement model or masked mandatory service UI.
+
+## 2026-10-02 — local Galaxy; stage 2 completed
+
+The user connected Sketchfab; the official 2K GLB was downloaded and verified to contain both original meshes, all three texture images and Take 001. The unchanged 1.28MB file is served from /models/galaxy.glb. A lazily imported Three.js renderer replaces the isolated SDK/iframe document completely. No external SDK or player UI remains; footer attribution is preserved.
+
+Original materials and animation are retained, with local bloom/exposure and quieter stars. Y-up camera composition preserves the right-side placement and responsive layout. Camera transitions retain the current angle when interrupted. The footer no longer reserves 140px for a native service hint; ordinary content padding remains. Hero, aligned projects, contacts, sound and approved MD are unchanged.
+
+Loading/error/reduced-motion modes retain the static original poster. GPU resources and ImageBitmaps are explicitly released, late fetch/loader completion is handled, and drawing stops offscreen/hidden. Detailed source and rendering adaptation are recorded in docs/vendor/GALAXY.md.
