@@ -8,7 +8,7 @@
 - File: public/models/galaxy.glb, 1,277,240 bytes; unchanged from the official download.
 - SHA-256: 466c0fcce1d6fe3da6baa56c754754e484b9fe00b5a32cc1744046019597990d.
 - Embedded metadata records title, author, source and CC-BY-4.0. Asset includes Galaxy mesh, original surrounding Sphere001, three PNG images and the original Take 001 rotation animation.
-- Attribution remains in the compact footer line, including in static mode. No third-party player is embedded, so no player branding or hint needs to be hidden.
+- Full attribution, original source, license and rendering modifications are presented on the public /credits page, accessible through the visible «Источники» footer link, including in static mode. No third-party player is embedded, so no player branding or hint needs to be hidden.
 
 ## Rendering adaptation
 

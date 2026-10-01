@@ -68,3 +68,7 @@ The user connected Sketchfab; the official 2K GLB was downloaded and verified to
 Original materials and animation are retained, with local bloom/exposure and quieter stars. Y-up camera composition preserves the right-side placement and responsive layout. Camera transitions retain the current angle when interrupted. The footer no longer reserves 140px for a native service hint; ordinary content padding remains. Hero, aligned projects, contacts, sound and approved MD are unchanged.
 
 Loading/error/reduced-motion modes retain the static original poster. GPU resources and ImageBitmaps are explicitly released, late fetch/loader completion is handled, and drawing stops offscreen/hidden. Detailed source and rendering adaptation are recorded in docs/vendor/GALAXY.md.
+
+## 2026-10-02 — compact source link
+
+Detailed Galaxy attribution moved to the public /credits route. The shared footer now shows only the visible «Источники» link. Credits retain the author, original model and license links, plus disclosure of rendering adaptations. The scene and interactions remain unchanged.

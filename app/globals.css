@@ -1831,6 +1831,14 @@ html[data-effects="off"] .portrait img { filter: brightness(.58) saturate(0); }
 .brand-mark { display: block; width: 36px; padding-right: 0; flex-shrink: 0; }
 .about-symbol .md-emblem { width: 78px; }
 .toolbox-sign .md-emblem { width: 96px; }
+.credits-page { min-height: 100svh; padding: 150px var(--pad) 100px; max-width: 960px; }
+.credits-page .back-link { display: inline-block; margin-bottom: 48px; }
+.credits-page .eyebrow { display: block; }
+.credits-page h1 { font-family: var(--display); font-size: clamp(54px, 9vw, 112px); line-height: 1.1; margin: 18px 0 48px; }
+.credits-page section { border-top: 1px solid var(--line); padding-top: 28px; }
+.credits-page h2 { font-family: var(--display); font-size: 32px; margin-bottom: 20px; }
+.credits-page p { color: var(--muted); margin-bottom: 20px; }
+.credits-page p a { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; overflow-wrap: anywhere; }
 @media (max-width: 700px) {
   .brand-mark { width: 30px; }
   .about-symbol .md-emblem { width: 50px; }

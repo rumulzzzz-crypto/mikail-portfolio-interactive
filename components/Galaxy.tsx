@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useEffects } from "@/lib/effects";
 import type { GalaxyController } from "@/lib/galaxy-renderer";
 
@@ -53,8 +54,6 @@ export function Galaxy({ topView = false }: { topView?: boolean }) {
 
 export function GalaxyCredit() {
   return <div className="galaxy-credit">
-    <a href="https://sketchfab.com/3d-models/galaxy-dbb2f075329747a09cc8add2ad05acad" target="_blank" rel="noreferrer">Galaxy</a>
-    {" by "}<a href="https://sketchfab.com/991519166" target="_blank" rel="noreferrer">991519166</a>
-    {" / Sketchfab · "}<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
+    <Link href="/credits">Источники</Link>
   </div>;
 }

@@ -69,3 +69,7 @@
 - Drawing buffer is capped; offscreen stop verified. Hidden-document stop and resource disposal reviewed in code. This browser provider did not mark the document hidden when a new tab was created, so physical background-tab CPU/GPU, WebGL loss/restore and real touch hardware are not claimed as measured.
 - Original meshes/textures/animation preserved; bloom, exposure and star intensity tuned locally. This is the original asset, with locally adapted postprocessing rather than a claim of pixel-identical Sketchfab rendering.
 - No player UI, native hint, SDK request or iframe remains. Attribution kept in the footer. Stage 2 is no longer blocked by account/asset access.
+
+## 2026-10-02 — attribution page
+
+Verified footer link to /credits, complete attribution links and adaptation disclosure, return to /#contact, visible keyboard focus, 390px mobile layout without horizontal overflow, and no local console errors. Next production build and TypeScript check passed.
