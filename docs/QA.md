@@ -50,3 +50,12 @@
 - CUDGI navigation and return checked at mobile width in reduced mode; BRAND BUILDER navigation and return checked on desktop in full mode. No captured application errors/warnings. Contact hrefs retain Telegram/mail destinations.
 - Native Sketchfab click-and-hold hint still appears; stage 2 remains partial. No official archive is present; no model assets were extracted.
 - TypeScript and production build passed. No added runtime dependencies.
+
+## 2026-10-02 — project alignment polish
+
+- Reduced-motion desktop 1440x900: both cards have identical top/width; both preview images have identical top/height; titles and demo links align. Before publication: imageHeight=324.82px and both titleTop=538.82px at the checked scroll position. The button no longer leaves a lime sliver in its resting state.
+- Mobile 390x844: cards are stacked with consistent left edge/width; no horizontal overflow. Existing mobile spacing and natural screenshot proportions remain.
+- CUDGI opens and returns in reduced mode; BRAND BUILDER opens and returns in full mode after the final CSS changes. Captured application console errors/warnings: none.
+- Hero flashlight again reaches active while pointing at the face; lime name retained. Keyboard project navigation and contact href checked. Full scene and reduced mode checked separately during the final audit.
+- Official model Download 3D Model again opens a Sketchfab login dialog. No archive available. ui_hint Premium restriction confirmed on official initialization documentation; stage 2 cannot be marked fully complete.
+- Production build and standalone typecheck pass. This change adds no dependencies.

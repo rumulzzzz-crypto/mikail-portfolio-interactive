@@ -54,3 +54,9 @@ GSAP раскрывает карточки одной последователь
 - Stage 5: both large name lines inherit var(--acid). Header name, typography, photo, flashlight and existing hero timelines remain as before.
 - Stage 6: existing approved BrandMark remains shared by header, about and toolbox; both cases use the shared header. The MD favicon remains /icon.svg?v=md-2.
 - Stage 2 remains partial: the native Sketchfab click-and-hold hint is still visible with ui_hint:0. No mandatory UI is masked or cropped. A local renderer still requires the official downloadable archive.
+
+## 2026-10-02 — final layout polish
+
+- Removed the desktop/tablet project offset and changed the two columns to equal widths. Shared 16:9 previews show the upper portion of each real interface without distorting the images; the full screenshots remain available in the cases. Mobile keeps natural image proportions and the existing vertical list spacing.
+- Fixed the partially visible lime case button below the preview: it is fully hidden at rest, appears on hover/focus, and remains visible on mobile/coarse pointers.
+- Prompt audit: original live Galaxy, full contact scene, independent flashlight, reversible camera, lime hero name and the approved vector MD remain implemented. Native Sketchfab hint is the remaining unmet requirement; official download was retried and opens login. Official initialization documentation again lists ui_hint as a Premium option. No replacement model or masked mandatory service UI.
