@@ -270,9 +270,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
   );
 }
 export function Footer() {
+  const [wordHovered, setWordHovered] = useState(false);
+  const [keyboardFocused, setKeyboardFocused] = useState(false);
   return (
     <footer className="contact" id="contact">
-      <Galaxy />
+      <Galaxy topView={wordHovered || keyboardFocused} />
       <div className="contact-top">
         <span className="eyebrow">Есть идея?</span>
         <span>Давайте сделаем её настоящей.</span>
@@ -283,13 +285,20 @@ export function Footer() {
         href="https://t.me/rumul"
         target="_blank"
         rel="noreferrer"
+        onFocus={(event) => setKeyboardFocused(event.currentTarget.matches(":focus-visible"))}
+        onBlur={() => setKeyboardFocused(false)}
       >
         <span>
           СОЗДАДИМ
           <br />
           ЧТО-ТО <em>↗</em>
         </span>
-        <span className="contact-outline">КЛАССНОЕ.</span>
+        <span className="contact-outline"
+          onPointerEnter={(event) => {
+            if (event.pointerType !== "touch" && matchMedia("(hover: hover) and (pointer: fine)").matches) setWordHovered(true);
+          }}
+          onPointerLeave={() => setWordHovered(false)}
+        >КЛАССНОЕ.</span>
       </a>
       </div>
       <ActionLink href="https://t.me/rumul" external magnetic>

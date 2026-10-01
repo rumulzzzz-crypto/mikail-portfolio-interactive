@@ -1383,10 +1383,11 @@ h3 {
   line-height: 1.03;
   letter-spacing: -0.035em;
   text-shadow: 0 2px 40px #0005;
+  color: var(--acid);
 }
 .hero-name > span:last-child {
   padding-left: 0;
-  color: var(--ink);
+  color: var(--acid);
 }
 .name-dot {
   color: var(--acid);

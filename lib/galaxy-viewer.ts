@@ -9,6 +9,7 @@ export const galaxyViewerDocument = `<!doctype html>
 const origin = parent.location.origin;
 let api = null, ready = false, running = false, originalCamera = null, fov = 45;
 let playbackRevision = 0;
+let desiredView = "default", cameraRevision = 0;
 const notify = status => parent.postMessage({type:"portfolio-galaxy",status}, origin);
 const playback = () => {
   if(!ready) return;
@@ -29,16 +30,29 @@ const playback = () => {
 };
 addEventListener("message", event => {
   if(event.source !== parent || event.origin !== origin || event.data?.type !== "portfolio-galaxy-running") return;
-  running = event.data.running === true;
+  if(typeof event.data.running !== "boolean" || !["default","top"].includes(event.data.view)) return;
+  const wasRunning = running;
+  running = event.data.running;
+  desiredView = running && !document.hidden ? event.data.view : "default";
+  if(ready) compose(running ? (desiredView === "top" ? 1 : 1.2) : 0);
+  if(wasRunning !== running) playback();
+});
+addEventListener("visibilitychange", () => {
+  if(document.hidden) { desiredView="default"; compose(0); }
   playback();
 });
-addEventListener("visibilitychange", playback);
 // Pan the camera, not the iframe: the complete canvas and watermark remain visible.
-function compose() {
+function compose(duration = 0) {
   if(!originalCamera) return;
   const p = originalCamera.position, t = originalCamera.target;
-  const v = p.map((n,i) => n-t[i]);
+  let v = p.map((n,i) => n-t[i]);
   const length = Math.hypot(...v);
+  if(desiredView === "top") {
+    // The disc lies in XY. A slight inclination avoids the Z-up orbit pole.
+    const horizontal = Math.hypot(v[0],v[1]);
+    if(horizontal < .0001) return;
+    v = [v[0]/horizontal*length*.04, v[1]/horizontal*length*.04, length*Math.sqrt(1-.04*.04)];
+  }
   const forward = v.map(n => -n/length);
   const rightLength = Math.hypot(forward[0],forward[1]);
   if(rightLength < .0001) return;
@@ -53,7 +67,16 @@ function compose() {
   const target = t.map((n,i) => n+shift[i]);
   const position = t.map((n,i) => n+v[i]*distance/length+shift[i]);
 
-  api.setCameraLookAt(position,target,0);
+  const revision = ++cameraRevision;
+  const view = desiredView;
+  const report = () => {
+    if(revision === cameraRevision) {
+      parent.postMessage({type:"portfolio-galaxy",camera:view},origin);
+    }
+  };
+  api.setCameraEasing("easeInOutCubic");
+  if(duration) api.setCameraLookAtEndAnimationCallback(error => { if(!error) report(); });
+  api.setCameraLookAt(position,target,duration,error => { if(!error && !duration) report(); });
 }
 let resizeTimer;
 addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer=setTimeout(compose,120); });

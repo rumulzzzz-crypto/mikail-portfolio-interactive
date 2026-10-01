@@ -40,3 +40,13 @@
 - CUDGI navigation and return checked in reduced mode at mobile width; Brand Builder navigation and return checked in full mode. No captured application errors or warnings. Physical touch hardware and GPU performance were not measured.
 - pnpm typecheck and production build pass. No added packages.
 - Remaining: native Sketchfab click-and-hold hint persists despite the official ui_hint:0 option (documented Premium restriction). Its clear footer area is retained; no overlay or branding crop is used. Download button opens login. Stage 1 works; stage 2 remains partial pending official model archive for local rendering; stage 3 works.
+
+## 2026-10-02 — remaining stages through 6
+
+- Desktop 1440x900: live scene reaches ready/playing. Actual camera changes from the oblique disc to a near top view on pointer entry over КЛАССНОЕ.; official completion reports data-camera=top. Leaving reports default. Rapid repeated entry/exit followed by navigation to the hero reports default/paused; menu return resumes playing. No poster rotation is used.
+- Keyboard: Shift+Tab from Обсудить проект focuses the CTA with :focus-visible and reaches top; Tab away returns to default.
+- Reload and resize: scene loads again, latest focus request is applied after ready. Mobile 390x844 retains the galaxy above/right of readable text; no horizontal overflow. Reduced mode removes the galaxy iframe. Physical touch devices, hidden-tab CPU/GPU and FPS were not measured; hidden-document handling reviewed in code.
+- Both hero name spans compute to rgb(182,255,67), matching --acid. Header name is unchanged. Existing MD remains on header/about/toolbox (3 instances on home) and shared case header (1). Favicon source matches the same vector path.
+- CUDGI navigation and return checked at mobile width in reduced mode; BRAND BUILDER navigation and return checked on desktop in full mode. No captured application errors/warnings. Contact hrefs retain Telegram/mail destinations.
+- Native Sketchfab click-and-hold hint still appears; stage 2 remains partial. No official archive is present; no model assets were extracted.
+- TypeScript and production build passed. No added runtime dependencies.

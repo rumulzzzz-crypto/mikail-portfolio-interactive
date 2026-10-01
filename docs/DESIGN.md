@@ -46,3 +46,11 @@ GSAP раскрывает карточки одной последователь
 - Contact: one full-section cosmic canvas with foreground text and functioning contacts. The original Galaxy is composed to the right with Viewer API camera coordinates, not CSS scaling/cropping of the embed. Original animation loops at 0.35 speed. Mobile moves the galaxy above/right of the headline. The reduced-mode poster alone receives a feathered mask; it never rotates or pretends to be 3D.
 - Remove all application-owned viewer labels, buttons, loading/error notices and the old hover translation. Attribution moves to the footer. The Sketchfab watermark and its unhideable native hint remain; reserve clear space below the footer text. No hover camera transition, logo replacement or name recoloring in this iteration.
 - The service's native hint is the outstanding stage-2 limitation. Local rendering requires an official downloadable archive; no new runtime dependencies have been added.
+
+## 2026-10-02 — stages 4–6
+
+- Stage 4: hovering the word КЛАССНОЕ. with a fine hover pointer changes the actual Sketchfab camera toward +Z (disc in XY) over 1 second with easeInOutCubic; leaving returns over 1.2 seconds. Keyboard focus-visible on the CTA requests the same view; blur restores it. The Telegram anchor and existing green fill are preserved.
+- Camera requests replace the current move; revision guards prevent stale completion acknowledgements. Initial loading retains the latest requested view. Resize immediately recomposes the active view using the existing responsive camera pan. Offscreen/hidden resets to the default view and pauses the scene. Reduced mode has no viewer; touch does not depend on hover. No poster animation or new dependency.
+- Stage 5: both large name lines inherit var(--acid). Header name, typography, photo, flashlight and existing hero timelines remain as before.
+- Stage 6: existing approved BrandMark remains shared by header, about and toolbox; both cases use the shared header. The MD favicon remains /icon.svg?v=md-2.
+- Stage 2 remains partial: the native Sketchfab click-and-hold hint is still visible with ui_hint:0. No mandatory UI is masked or cropped. A local renderer still requires the official downloadable archive.

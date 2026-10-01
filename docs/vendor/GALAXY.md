@@ -23,3 +23,9 @@ The poster file is unchanged; CSS feathering and repositioning adapt it as a sta
 Remaining limitation: Sketchfab still displays its click-and-hold hint despite ui_hint:0. Official initialization documentation lists this as a Premium option. It is deliberately not hidden with an overlay. Stage 2 is therefore partial until a locally renderable official download is provided. Download 3D Model currently opens a login form (checked 2026-09-28). Required: official GLB or glTF ZIP with all textures, animation, and license information; its visual equivalence must be checked before replacing the embed.
 
 Documentation: https://sketchfab.com/developers/viewer/initialization and https://sketchfab.com/developers/viewer/functions
+
+## 2026-10-02 — camera refinement
+
+The word КЛАССНОЕ. requests a real top camera view, near +Z with a small inclination to avoid the orbit pole. setCameraLookAt with easeInOutCubic transitions to that view in 1 second and returns in 1.2 seconds. The original camera is retained for the return; existing right-side responsive pan is recomputed for either view. Camera completion uses the documented setCameraLookAtEndAnimationCallback and revision validation. Initial load, resize and hidden/offscreen reset use the same composition function.
+
+The native click-and-hold hint was reproduced again. This implementation continues to preserve the service UI and attribution, and does not claim stage 2 is fully complete.
