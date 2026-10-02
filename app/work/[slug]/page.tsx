@@ -104,11 +104,11 @@ export default async function Case({
               </div>
               <div className="case-screen-pair">
                 <figure className="case-desktop-screen">
-                  <Lightbox className="case-screen" src={`/images/cases/${decision.desktop.file}`} alt={decision.desktop.alt} width={1280} height={720} />
+                  <Lightbox className="case-screen" src={`/images/cases/${decision.desktop.file}`} alt={decision.desktop.alt} width={decision.desktop.width} height={decision.desktop.height} />
                   <figcaption>{decision.desktop.caption}</figcaption>
                 </figure>
                 <figure className="case-mobile-screen">
-                  <Lightbox className="case-screen" src={`/images/cases/${decision.mobile.file}`} alt={decision.mobile.alt} width={390} height={844} />
+                  <Lightbox className="case-screen" src={`/images/cases/${decision.mobile.file}`} alt={decision.mobile.alt} width={decision.mobile.width} height={decision.mobile.height} />
                   <figcaption>{decision.mobile.caption}</figcaption>
                 </figure>
               </div>
@@ -131,7 +131,7 @@ export default async function Case({
           </ol>
           {study.extra ? (
             <figure className="case-export-screen">
-              <Lightbox className="case-screen" src={`/images/cases/${study.extra.file}`} alt={study.extra.alt} width={1080} height={1350} />
+              <Lightbox className="case-screen" src={`/images/cases/${study.extra.file}`} alt={study.extra.alt} width={study.extra.width} height={study.extra.height} />
               <figcaption>{study.extra.caption}</figcaption>
             </figure>
           ) : null}

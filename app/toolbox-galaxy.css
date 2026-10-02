@@ -29,7 +29,7 @@
   transition: background .35s, color .35s;
 }
 .tool-tile h4 { font-family: var(--display); font-size: 17px; text-transform: uppercase; letter-spacing: .12em; text-align: right; margin: 0; font-weight: 500; }
-.tool-mark { position: absolute; width: clamp(94px, 8.5vw, 150px); height: auto; left: 18px; bottom: 55px; transform-origin: center; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.tool-mark { position: absolute; width: clamp(94px, 8.5vw, 150px); height: auto; left: 18px; bottom: 90px; transform-origin: center; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
 .tool-tile p { position: absolute; bottom: 18px; left: 24px; right: 24px; font-size: 12px; line-height: 1.45; margin: 0; max-width: 175px; }
 .tool-corner { position: absolute; bottom: 14px; right: 15px; opacity: .5; }
 .toolbox-note { grid-area: 1 / 4; align-self: center; font-family: var(--display); font-size: clamp(23px, 2.8vw, 42px); line-height: 1.14; letter-spacing: -.025em; margin: 0 24px; }
@@ -92,7 +92,7 @@ html[data-effects="off"] .galaxy-canvas { transition: none; }
   .toolbox-note { grid-area: 3 / 2; font-size: 19px; margin-left: 18px; }
   .toolbox-sign { grid-area: 3 / 1; padding: 12px 18px; font-size: 40px; }
   .toolbox-sign span { margin-top: 12px; font-size: 9px; }
-  .tool-mark { width: 88px; bottom: 54px; left: 15px; }
+  .tool-mark { width: 68px; bottom: 88px; left: 15px; }
   .tool-tile h4 { font-size: 13px; letter-spacing: .08em; }
   .tool-tile p { font-size: 11px; bottom: 15px; }
   .contact .contact-universe { padding: 180px 0 34px; min-height: 430px; align-items: flex-end; }

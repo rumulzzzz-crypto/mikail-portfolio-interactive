@@ -11,6 +11,7 @@ import { BrandMark } from "./BrandMark";
 import { Toolbox } from "./Toolbox";
 import { Footer, Scramble } from "./Shell";
 import { projects } from "@/lib/projects";
+import Link from "next/link";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 export function Home() {
   const animated = useEffects();
@@ -75,7 +76,7 @@ export function Home() {
       <section className="hero grid-surface">
         <div className="hero-meta">
           <p>
-            Независимый дизайнер
+            Веб-дизайнер
             <br />и разработчик сайтов
           </p>
           <span className="hero-location">ДИЗАЙН × ТЕХНОЛОГИИ</span>
@@ -88,8 +89,8 @@ export function Home() {
             +
           </span>
           <p>
-            Соединяю визуальный характер
-            <br />с продуманным взаимодействием.
+            Создаю сайты с характером
+            <br />и понятным путём к действию.
           </p>
         </div>
         <h1 className="hero-name" aria-label="Микаил Дадашов">
@@ -99,7 +100,7 @@ export function Home() {
           </span>
         </h1>
         <div className="hero-foot">
-          <span>Веб-дизайн и разработка</span>
+          <span>От идеи до работающего сайта</span>
           <ActionLink href="#work" magnetic>
             Смотреть работы
           </ActionLink>
@@ -109,7 +110,7 @@ export function Home() {
       <section id="about" className="about">
         <div className="section-meta">
           <span>Обо мне</span>
-          <span>Идея → интерфейс → сайт</span>
+          <span>Дать идее форму</span>
         </div>
         <div className="about-body">
           <span className="about-symbol" aria-hidden="true">
@@ -122,12 +123,14 @@ export function Home() {
           </h2>
           <div className="about-copy reveal">
             <p>
-              Мне интересны сайты, которые запоминаются. Где у визуала есть
-              характер, а у каждого движения — смысл.
+              Создаю веб-дизайн и разрабатываю сайты. Помогаю передать характер
+              вашего проекта и сделать следующий шаг понятным: выбрать товар,
+              изучить продукт или связаться с вами.
             </p>
             <p>
-              Работаю над композицией, интерфейсом и реализацией. От первого
-              впечатления до того, как открывается меню и ощущается нажатие.
+              Работаю со структурой страниц, композицией и кодом. Продумываю
+              мобильную версию и реакции интерфейса. Как свет на фотографии,
+              движение направляет внимание — к работе, её деталям и следующему шагу.
             </p>
           </div>
         </div>
@@ -149,9 +152,9 @@ export function Home() {
             РАБОТЫ<span className="lime">.</span>
           </h2>
           <p>
-            Два разных мира.
+            От витрины бренда
             <br />
-            Внимание к каждой детали.
+            до интерфейса продукта.
           </p>
         </div>
         <div className="projects">
@@ -213,6 +216,10 @@ export function Home() {
               </a>
             </GlowCard>
           ))}
+        </div>
+        <div className="lab-entry">
+          <p>Как свет и движение работают в интерфейсе</p>
+          <Link href="/lab" prefetch={false}>Посмотреть лабораторию ↗</Link>
         </div>
       </section>
       <Footer />

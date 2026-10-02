@@ -45,6 +45,7 @@ export function Lightbox({
           width={width}
           height={height}
           loading={slug ? "eager" : "lazy"}
+          decoding="async"
         />
         <span>Рассмотреть интерфейс ↗</span>
       </button>
@@ -61,7 +62,7 @@ export function Lightbox({
         <button className="lightbox-close cut" onClick={close} autoFocus>
           Закрыть ×
         </button>
-        <img src={src} alt={alt} loading="lazy" />
+        <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
       </dialog>
     </>
   );

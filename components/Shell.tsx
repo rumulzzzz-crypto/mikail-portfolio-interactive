@@ -107,6 +107,33 @@ export function Shell({ children }: { children: React.ReactNode }) {
       router.push(destination, { scroll: false });
     }
   };
+  // Native hash scrolling happens before desktop pin spacing exists on a hard load.
+  // Correct it once after fonts/layout settle, unless the visitor has started navigating.
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (pathname !== "/" || !["#about", "#work", "#contact"].includes(hash)) return;
+    let cancelled = false;
+    let frame = 0;
+    const cancel = () => { cancelled = true; cancelAnimationFrame(frame); };
+    const events = ["wheel", "touchstart", "pointerdown", "keydown"] as const;
+    events.forEach(event => window.addEventListener(event, cancel, { passive: true, once: true }));
+    void document.fonts.ready.then(() => {
+      if (cancelled) return;
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (cancelled || window.location.hash !== hash) return;
+          ScrollTrigger.refresh();
+          const target = root.current?.querySelector<HTMLElement>(hash);
+          if (!target) return;
+          const top = target.getBoundingClientRect().top + window.scrollY - 90;
+          window.scrollTo({ top, behavior: "instant" });
+          lenis.current?.resize();
+          lenis.current?.scrollTo(top, { immediate: true, force: true });
+        });
+      });
+    });
+    return () => { cancel(); events.forEach(event => window.removeEventListener(event, cancel)); };
+  }, []);
   const [time, setTime] = useState("");
   useEffect(() => {
     const update = () =>
@@ -335,7 +362,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <option value="off">Уменьшенная</option>
               </select>
             </label>
-            <p>ЕСТЬ ИДЕЯ? ДАВАЙТЕ ОБСУДИМ.</p>
+            <p>ОБСУДИМ ВАШ САЙТ.</p>
             <a href="https://t.me/rumul" target="_blank" rel="noreferrer">
               Telegram ↗
             </a>
@@ -354,8 +381,8 @@ export function Footer() {
     <footer className="contact" id="contact">
       <Galaxy topView={wordHovered || keyboardFocused} />
       <div className="contact-top">
-        <span className="eyebrow">Есть идея?</span>
-        <span>Давайте сделаем её настоящей.</span>
+        <span className="eyebrow">Есть идея сайта?</span>
+        <span>Дадим ей форму.</span>
       </div>
       <div className="contact-universe">
       <a
@@ -363,6 +390,7 @@ export function Footer() {
         href="https://t.me/rumul"
         target="_blank"
         rel="noreferrer"
+        aria-label="Обсудить сайт в Telegram"
         onFocus={(event) => setKeyboardFocused(event.currentTarget.matches(":focus-visible"))}
         onBlur={() => setKeyboardFocused(false)}
       >
@@ -379,8 +407,12 @@ export function Footer() {
         >КЛАССНОЕ.</span>
       </a>
       </div>
+      <p className="contact-brief">
+        Расскажите о проекте и о том, что должен делать сайт.
+        Обсудим дизайн и реализацию.
+      </p>
       <ActionLink href="https://t.me/rumul" external magnetic>
-        Обсудить проект
+        Написать в Telegram
       </ActionLink>
       <div className="contact-links">
         <a href="https://t.me/rumul" target="_blank" rel="noreferrer">
@@ -394,7 +426,6 @@ export function Footer() {
       <div className="footer-bottom">
         <span>© 2026 Микаил Дадашов</span>
         <span>Веб-дизайн и разработка</span>
-        <span>Сделано с вниманием.</span>
       </div>
       <GalaxyCredit />
     </footer>

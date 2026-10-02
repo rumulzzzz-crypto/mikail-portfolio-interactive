@@ -10,10 +10,10 @@ import { BrandMark } from "./BrandMark";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const tools = [
-  { name: "Figma", kind: "figma", text: "Интерфейсы и прототипы" },
-  { name: "Codex", kind: "codex", text: "Разработка и работа с кодом" },
-  { name: "Photoshop", kind: "photoshop", text: "Изображения и графика" },
-  { name: "Higgsfield", kind: "higgsfield", text: "Генеративные визуалы и видео" },
+  { name: "Figma", kind: "figma", text: "Структура страниц и прототипы перед разработкой" },
+  { name: "Codex", kind: "codex", text: "Реализация, адаптивная вёрстка и взаимодействия" },
+  { name: "Photoshop", kind: "photoshop", text: "Подготовка фотографий и графики для страниц" },
+  { name: "Higgsfield", kind: "higgsfield", text: "Визуальные концепции, AI-изображения и видео" },
 ];
 
 function ToolMark({ kind }: { kind: string }) {
@@ -64,8 +64,8 @@ export function Toolbox() {
   return (
     <div className="toolbox" ref={root} aria-labelledby="toolbox-title">
       <div className="toolbox-heading">
-        <h3 id="toolbox-title">Инструменты, которыми создаю.</h3>
-        <span>Дизайн / код / визуал</span>
+        <h3 id="toolbox-title">Инструменты в работе.</h3>
+        <span>У каждого инструмента своя задача</span>
       </div>
       <div className="toolbox-grid">
         <p className="toolbox-note">ОТ ПЕРВОГО<br />ЭСКИЗА<br /><span>ДО ЗАПУСКА.</span></p>
@@ -79,7 +79,7 @@ export function Toolbox() {
             </article>
           </div>
         ))}
-        <div className="toolbox-sign" aria-hidden="true"><BrandMark /><span>Идеи обретают форму.</span></div>
+        <div className="toolbox-sign" aria-hidden="true"><BrandMark /><span>Дизайн переходит в код.</span></div>
       </div>
     </div>
   );

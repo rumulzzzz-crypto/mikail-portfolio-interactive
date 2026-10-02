@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Источники",
-  description: "Авторство и лицензия 3D-модели Galaxy, используемой в портфолио.",
+  description: "Источники и лицензии 3D-модели Galaxy, компонентов взаимодействия и шрифтов портфолио.",
 };
 
 export default function CreditsPage() {
   return (
     <main id="main" className="credits-page">
-      <Link href="/#contact" className="back-link">← К портфолио</Link>
+      <a href="/#contact" className="back-link">← К портфолио</a>
       <span className="eyebrow">Материалы / авторство</span>
       <h1>Источники<span className="lime">.</span></h1>
       <section aria-labelledby="galaxy-source">
@@ -27,6 +26,15 @@ export default function CreditsPage() {
           Для портфолио адаптированы освещение, свечение, положение камеры и композиция.
           Исходная геометрия, текстуры и анимация Take 001 сохранены.
         </p>
+      </section>
+      <section aria-labelledby="interaction-source">
+        <h2 id="interaction-source">Взаимодействия</h2>
+        <p>Кнопка с угловыми акцентами, магнитная реакция и подсветка карточки адаптированы из <a href="https://github.com/educlopez/smoothui">SmoothUI</a>. Исходные компоненты распространяются по лицензии MIT.</p>
+        <p>Для портфолио доработаны семантика ссылок, ограничение смещения, клавиатурный фокус и уменьшенные эффекты. Проявление фотографии светом реализовано отдельно в этом проекте.</p>
+      </section>
+      <section aria-labelledby="font-source">
+        <h2 id="font-source">Шрифты</h2>
+        <p>Oswald и Manrope поставляются локально. Лицензии SIL Open Font License: <a href="/fonts/oswald-LICENSE.txt">Oswald</a> и <a href="/fonts/manrope-LICENSE.txt">Manrope</a>.</p>
       </section>
     </main>
   );
