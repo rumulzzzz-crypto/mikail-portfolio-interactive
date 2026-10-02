@@ -12,6 +12,7 @@ import { Toolbox } from "./Toolbox";
 import { Footer, Scramble } from "./Shell";
 import { projects } from "@/lib/projects";
 import Link from "next/link";
+import { SectionProgress } from "./SectionProgress";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 export function Home() {
   const animated = useEffects();
@@ -34,17 +35,8 @@ export function Home() {
             { opacity: 0, y: 12, duration: 0.7, stagger: 0.1 },
             0.3,
           );
-        gsap.utils
-          .toArray<HTMLElement>(".reveal", root.current)
-          .forEach((el) =>
-            gsap.from(el, {
-              y: 24,
-              opacity: 0,
-              duration: 0.5,
-              scrollTrigger: { trigger: el, start: "top 93%", once: true },
-            }),
-          );
       });
+      // Create the existing pin first so later triggers include its spacing.
       mm.add("(min-width: 1000px)", () => {
         gsap
           .timeline({
@@ -60,6 +52,50 @@ export function Home() {
           .to(".hero-name", { y: -65, opacity: 0.2 }, 0)
           .to(".portrait", { opacity: 0.65 }, 0);
       });
+      mm.add("all", () => {
+        gsap.utils
+          .toArray<HTMLElement>(".reveal", root.current)
+          .forEach((el) =>
+            gsap.from(el, {
+              y: 24,
+              opacity: 0,
+              duration: 0.65,
+              ease: "power3.out",
+              scrollTrigger: { trigger: el, start: "top 93%", once: true },
+            }),
+          );
+        gsap.from(".heading-line-inner", {
+          yPercent: 110,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: "power4.out",
+          scrollTrigger: { trigger: ".about-title", start: "top 88%", once: true },
+        });
+        // A shared trigger and no stagger preserve the equal level of both works.
+        gsap.from(".project", {
+          y: 32,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".projects", start: "top 92%", once: true },
+        });
+      });
+      mm.add("(min-width: 1000px)", () => {
+        const track = root.current?.querySelector<HTMLElement>(".disciplines");
+        const viewport = track?.parentElement;
+        if (!track || !viewport) return;
+        gsap.fromTo(track, { x: 24 }, {
+          x: () => -Math.max(24, track.scrollWidth - viewport.clientWidth + 24),
+          ease: "none",
+          scrollTrigger: {
+            trigger: viewport,
+            start: "clamp(top bottom)",
+            end: "clamp(bottom 20%)",
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
       let cancelled = false;
       document.fonts.ready.then(() => {
         if (!cancelled) ScrollTrigger.refresh();
@@ -73,6 +109,7 @@ export function Home() {
   );
   return (
     <main ref={root} id="main">
+      <SectionProgress />
       <section className="hero grid-surface">
         <div className="hero-meta">
           <p>
@@ -116,10 +153,9 @@ export function Home() {
           <span className="about-symbol" aria-hidden="true">
             <BrandMark />
           </span>
-          <h2 className="reveal">
-            ХОРОШИЙ САЙТ
-            <br />
-            ХОЧЕТСЯ <span>ИССЛЕДОВАТЬ.</span>
+          <h2 className="about-title" aria-label="Хороший сайт хочется исследовать.">
+            <span className="heading-line" aria-hidden="true"><span className="heading-line-inner">ХОРОШИЙ САЙТ</span></span>
+            <span className="heading-line" aria-hidden="true"><span className="heading-line-inner">ХОЧЕТСЯ <span className="heading-accent">ИССЛЕДОВАТЬ.</span></span></span>
           </h2>
           <div className="about-copy reveal">
             <p>
@@ -135,11 +171,13 @@ export function Home() {
           </div>
         </div>
         <Toolbox />
-        <div className="disciplines">
-          <span>Веб-дизайн</span>
-          <span>Разработка</span>
-          <span>Интерактив</span>
-          <span>AI-визуал</span>
+        <div className="discipline-window">
+          <div className="disciplines">
+            <span>Веб-дизайн</span>
+            <span>Разработка</span>
+            <span>Интерактив</span>
+            <span>AI-визуал</span>
+          </div>
         </div>
       </section>
       <section id="work" className="work-section grid-surface">
@@ -159,7 +197,7 @@ export function Home() {
         </div>
         <div className="projects">
           {projects.map((p, i) => (
-            <GlowCard className={`project project-${i} project--${p.slug} reveal`} key={p.slug}>
+            <GlowCard className={`project project-${i} project--${p.slug}`} key={p.slug}>
               <ProjectLink
                 className="project-image"
                 href={`/work/${p.slug}`}
