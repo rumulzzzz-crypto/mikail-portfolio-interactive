@@ -42,6 +42,7 @@ export function ActionLink({
     fine = useHoverDevice(),
     [hover, setHover] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
+  const [focused, setFocused] = useState(false);
   const x = useSpring(0, { stiffness: 240, damping: 26 }),
     y = useSpring(0, { stiffness: 240, damping: 26 });
   const active = fine && !reduced;
@@ -79,6 +80,8 @@ export function ActionLink({
         style={{ x, y }}
         target={external ? "_blank" : undefined}
         rel={external ? "noreferrer" : undefined}
+        onFocus={(event) => setFocused(event.currentTarget.matches(":focus-visible"))}
+        onBlur={() => setFocused(false)}
       >
         <span className="action-fill" aria-hidden="true" />
         {[
@@ -92,8 +95,8 @@ export function ActionLink({
             aria-hidden="true"
             className={`action-corner corner-${i}`}
             animate={{
-              x: active && hover ? a * 3 : 0,
-              y: active && hover ? b * 3 : 0,
+              x: !reduced && (focused || (fine && hover)) ? a * 3 : 0,
+              y: !reduced && (focused || (fine && hover)) ? b * 3 : 0,
             }}
             transition={{ duration: reduced ? 0 : 0.22 }}
           />

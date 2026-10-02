@@ -37,9 +37,9 @@ export function Home() {
           .toArray<HTMLElement>(".reveal", root.current)
           .forEach((el) =>
             gsap.from(el, {
-              y: 45,
+              y: 24,
               opacity: 0,
-              duration: 0.85,
+              duration: 0.5,
               scrollTrigger: { trigger: el, start: "top 93%", once: true },
             }),
           );
@@ -156,7 +156,7 @@ export function Home() {
         </div>
         <div className="projects">
           {projects.map((p, i) => (
-            <GlowCard className={`project project-${i} reveal`} key={p.slug}>
+            <GlowCard className={`project project-${i} project--${p.slug} reveal`} key={p.slug}>
               <ProjectLink
                 className="project-image"
                 href={`/work/${p.slug}`}
@@ -167,17 +167,15 @@ export function Home() {
                   <span />
                   <span />
                   <span>
-                    {p.slug === "cudgi"
-                      ? "cudgi / digital wardrobe"
-                      : "brand builder / creative studio"}
+                    {p.coverCaption}
                   </span>
                 </div>
                 <img
                   data-project-image={p.slug}
                   src={p.image}
-                  alt={`Реальный интерфейс ${p.name}`}
-                  width="1440"
-                  height="1000"
+                  alt={p.imageAlt}
+                  width={p.imageWidth}
+                  height={p.imageHeight}
                   loading="lazy"
                 />
                 <span className="project-open">СМОТРЕТЬ КЕЙС ↗</span>
@@ -200,6 +198,10 @@ export function Home() {
                   ↗
                 </ProjectLink>
               </div>
+              <dl className="project-facts">
+                <div><dt>Моя роль</dt><dd>{p.role}</dd></div>
+                <div><dt>Формат</dt><dd>{p.format}</dd></div>
+              </dl>
               <p className="project-description">{p.description}</p>
               <a
                 className="live-link"

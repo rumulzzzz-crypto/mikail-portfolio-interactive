@@ -1,13 +1,12 @@
 "use client";
 import {
-  effectsAllowed,
   useEffects,
   useEffectsPreference,
   setEffectsPreference,
 } from "@/lib/effects";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
@@ -20,15 +19,16 @@ import { BrandMark } from "./BrandMark";
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, useGSAP);
 
 export function Scramble({ children }: { children: string }) {
+  const animated = useEffects();
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
     const parent = node.closest("a,button") ?? node;
     const enter = () => {
-      if (!effectsAllowed()) return;
+      if (!animated) return;
       gsap.to(node, {
-        duration: 0.38,
+        duration: 0.22,
         scrambleText: { text: children, chars: "<>_+01", revealDelay: 0.04 },
         overwrite: true,
       });
@@ -39,12 +39,16 @@ export function Scramble({ children }: { children: string }) {
     };
     parent.addEventListener("pointerenter", enter);
     parent.addEventListener("pointerleave", leave);
+    parent.addEventListener("focus", enter);
+    parent.addEventListener("blur", leave);
     return () => {
       parent.removeEventListener("pointerenter", enter);
       parent.removeEventListener("pointerleave", leave);
+      parent.removeEventListener("focus", enter);
+      parent.removeEventListener("blur", leave);
       leave();
     };
-  }, [children]);
+  }, [children, animated]);
   return (
     <span aria-label={children}>
       <span ref={ref} aria-hidden="true">
@@ -58,11 +62,51 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const animated = useEffects(),
     effectPreference = useEffectsPreference();
   const pathname = usePathname();
+  const router = useRouter();
   const root = useRef<HTMLDivElement>(null),
     dialog = useRef<HTMLDialogElement>(null),
     menuButton = useRef<HTMLButtonElement>(null),
     lenis = useRef<Lenis | null>(null);
   const [open, setOpen] = useState(false);
+  const menuTimeline = useRef<gsap.core.Timeline | null>(null);
+  const menuOverflow = useRef<string | null>(null);
+  const menuDesired = useRef(open);
+  const menuDestination = useRef<string | null>(null);
+  const menuAnchor = useRef<string | null>(null);
+  const currentPath = useRef(pathname);
+  currentPath.current = pathname;
+  menuDesired.current = open;
+  const scrollToMenuAnchor = (hash: string) => {
+    const target = root.current?.querySelector<HTMLElement>(hash);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - 90;
+    if (lenis.current) {
+      lenis.current.resize();
+      lenis.current.scrollTo(top);
+    } else window.scrollTo({ top, behavior: "instant" });
+    target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+  };
+  const finishMenu = (focus = true) => {
+    if (menuOverflow.current !== null) {
+      document.body.style.overflow = menuOverflow.current;
+      menuOverflow.current = null;
+    }
+    lenis.current?.start();
+    if (dialog.current?.open) {
+      dialog.current.close();
+      if (focus) menuButton.current?.focus({ preventScroll: true });
+    }
+    const destination = menuDestination.current;
+    menuDestination.current = null;
+    if (destination) {
+      if (destination.startsWith("/#")) {
+        if (currentPath.current === "/") scrollToMenuAnchor(destination.slice(1));
+        else menuAnchor.current = destination.slice(1);
+      }
+      router.push(destination, { scroll: false });
+    }
+  };
   const [time, setTime] = useState("");
   useEffect(() => {
     const update = () =>
@@ -99,10 +143,16 @@ export function Shell({ children }: { children: React.ReactNode }) {
       };
     };
     setup();
+    const scroll = (event: Event) => {
+      lenis.current?.resize();
+      lenis.current?.scrollTo((event as CustomEvent<number>).detail, { immediate: true, force: true });
+    };
+    window.addEventListener("portfolio-scroll", scroll);
     mm.addEventListener("change", setup);
     return () => {
       remove();
       mm.removeEventListener("change", setup);
+      window.removeEventListener("portfolio-scroll", scroll);
     };
   }, [animated]);
   useGSAP(
@@ -123,37 +173,40 @@ export function Shell({ children }: { children: React.ReactNode }) {
     },
     { scope: root, dependencies: [pathname, animated], revertOnUpdate: true },
   );
+  useGSAP(() => {
+    const d = dialog.current;
+    if (!d || !animated) return;
+    const timeline = gsap.timeline({ paused: true, onReverseComplete: () => finishMenu() });
+    timeline.fromTo(d.querySelector(".menu-panel"), { xPercent: 105 }, { xPercent: 0, duration: 0.42, ease: "power3.out" }, 0)
+      .fromTo(d.querySelectorAll(".menu-link"), { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: "power2.out" }, 0.1);
+    menuTimeline.current = timeline;
+    if (d.open && menuDesired.current) timeline.progress(1);
+    return () => {
+      timeline.kill();
+      menuTimeline.current = null;
+    };
+  }, { scope: dialog, dependencies: [animated], revertOnUpdate: true });
   useEffect(() => {
     const d = dialog.current;
     if (!d) return;
     if (open) {
-      d.showModal();
+      if (!d.open) {
+        menuOverflow.current = document.body.style.overflow;
+        d.showModal();
+      }
       lenis.current?.stop();
-      const prev = document.body.style.overflow;
       document.body.style.overflow = "hidden";
-      const ctx = gsap.context(() => {
-        if (!!effectsAllowed()) {
-          gsap.fromTo(
-            ".menu-panel",
-            { xPercent: 105 },
-            { xPercent: 0, duration: 0.45, ease: "power3.out" },
-          );
-          gsap.fromTo(
-            ".menu-link",
-            { y: 25, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.4, stagger: 0.055, delay: 0.12 },
-          );
-        }
-      }, d);
-      return () => {
-        ctx.revert();
-        document.body.style.overflow = prev;
-        lenis.current?.start();
-        d.close();
-      };
+      menuTimeline.current?.timeScale(1).play();
+    } else if (d.open) {
+      if (animated && menuTimeline.current && menuTimeline.current.time() > 0)
+        menuTimeline.current.timeScale(1.25).reverse();
+      else finishMenu();
     }
-    d.close();
   }, [open, animated]);
+  useEffect(() => () => {
+    menuDestination.current = null;
+    finishMenu(false);
+  }, []);
   useGSAP(
     () => {
       if (animated)
@@ -168,11 +221,32 @@ export function Shell({ children }: { children: React.ReactNode }) {
     { scope: root, dependencies: [animated], revertOnUpdate: true },
   );
   const close = () => {
+    menuDestination.current = null;
     setOpen(false);
-    menuButton.current?.focus();
+  };
+  const closeForNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    menuDestination.current = href;
+    setOpen(false);
+    if (!animated || !menuTimeline.current || !menuTimeline.current.time()) finishMenu(false);
   };
   useEffect(() => {
+    menuDestination.current = null;
+    menuTimeline.current?.pause(0);
+    finishMenu(false);
     setOpen(false);
+    if (pathname === "/" && menuAnchor.current) {
+      const hash = menuAnchor.current;
+      menuAnchor.current = null;
+      let frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          scrollToMenuAnchor(hash);
+        });
+      });
+      return () => cancelAnimationFrame(frame);
+    }
   }, [pathname]);
   return (
     <div ref={root}>
@@ -217,6 +291,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
           if (e.target === dialog.current) close();
         }}
         aria-label="Навигация"
+        onClose={() => {
+          finishMenu(false);
+          setOpen(false);
+        }}
       >
         <div className="menu-panel">
           <div className="menu-top">
@@ -231,7 +309,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               ["Работы", "/#work"],
               ["Контакт", "/#contact"],
             ].map(([label, url], i) => (
-              <Link className="menu-link" href={url} key={url} onClick={close}>
+              <Link className="menu-link" href={url} key={url} onClick={(event) => closeForNavigation(event, url)}>
                 <span className="menu-index">0{i + 1}</span>
                 <Scramble>{label}</Scramble>
                 <span className="menu-arrow" aria-hidden="true">

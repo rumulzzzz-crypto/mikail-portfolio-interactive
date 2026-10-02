@@ -4,10 +4,16 @@ export function Lightbox({
   src,
   alt,
   slug,
+  className = "case-image",
+  width = 1440,
+  height = 1000,
 }: {
   src: string;
   alt: string;
-  slug: string;
+  slug?: string;
+  className?: string;
+  width?: number;
+  height?: number;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const previousOverflow = useRef<string | null>(null);
@@ -19,15 +25,16 @@ export function Lightbox({
   };
   useEffect(() => () => restore(), []);
   const open = () => {
+    if (!dialog.current || dialog.current.open) return;
     previousOverflow.current = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    dialog.current?.showModal();
+    dialog.current.showModal();
   };
   const close = () => dialog.current?.close();
   return (
     <>
       <button
-        className="case-image"
+        className={className}
         onClick={open}
         aria-label={`Увеличить: ${alt}`}
       >
@@ -35,8 +42,9 @@ export function Lightbox({
           data-project-image={slug}
           src={src}
           alt={alt}
-          width="1440"
-          height="1000"
+          width={width}
+          height={height}
+          loading={slug ? "eager" : "lazy"}
         />
         <span>Рассмотреть интерфейс ↗</span>
       </button>
@@ -53,7 +61,7 @@ export function Lightbox({
         <button className="lightbox-close cut" onClick={close} autoFocus>
           Закрыть ×
         </button>
-        <img src={src} alt={alt} />
+        <img src={src} alt={alt} loading="lazy" />
       </dialog>
     </>
   );
