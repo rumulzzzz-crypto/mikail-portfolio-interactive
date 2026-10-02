@@ -26,7 +26,7 @@ function ToolMark({ kind }: { kind: string }) {
         </pattern>
         <mask id={`raster-${id}`}><rect width="120" height="120" fill={`url(#dots-${id})`} /></mask>
       </defs>
-      <g fill="currentColor" mask={kind === "higgsfield" ? undefined : `url(#raster-${id})`}>
+      <g fill="currentColor" mask={`url(#raster-${id})`}>
         {kind === "figma" && <>
           <path d="M60 12H44a16 16 0 0 0 0 32h16zM60 44H44a16 16 0 0 0 0 32h16zM60 76H44a16 16 0 1 0 16 16zM60 12h16a16 16 0 0 1 0 32H60z" />
           <circle cx="76" cy="60" r="16" />
