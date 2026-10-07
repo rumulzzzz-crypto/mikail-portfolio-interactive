@@ -4,13 +4,13 @@ export const projects = [
   {slug:'gran',name:'ГРАНЬ',category:'Веб-дизайн / разработка',year:'2026',image:'/images/covers/gran.jpg',url:'https://gran-detailing.vercel.app/',intro:'Уход начинается с деталей.',description:'Авторский концепт детейлинг-студии: выразительная автомобильная подача и понятный выбор ухода.',task:'Передать характер студии и выстроить путь от задачи владельца автомобиля до подготовленного обращения.',approach:'Тёмная автомобильная фотография, крупная типографика и золотистые акценты. Подбор по задаче раскрывает услуги, их возможности и ограничения; сравнение и форма позволяют попробовать сценарий.',details:['Подбор ухода по задаче и вкладки услуг','Интерактивное сравнение до и после','Адаптивная страница и подготовка обращения'],status:'Авторский концепт, не сайт действующей студии. Изображения созданы ИИ. Форма только готовит текст: данные не отправляются, запись и расчёт не выполняются.',stack:'HTML / CSS / JavaScript / Vercel',color:'#c9a36b'},
 ].map((project) => ({
   ...project,
-  image: `/images/covers/${project.slug}.jpg`,
-  imageWidth: project.slug === 'gran' ? 1425 : project.slug === 'cudgi' ? 1280 : 510,
-  imageHeight: project.slug === 'gran' ? 891 : project.slug === 'cudgi' ? 800 : 401,
+  image: project.slug === 'brand-builder' ? '/images/covers/brand-builder-v2.png' : `/images/covers/${project.slug}.jpg`,
+  imageWidth: project.slug === 'gran' ? 1425 : project.slug === 'cudgi' ? 1280 : 1600,
+  imageHeight: project.slug === 'gran' ? 891 : project.slug === 'cudgi' ? 800 : 1100,
   imageAlt: project.slug === 'gran' ? 'Первый экран Грани: автомобиль в тёмной студии и выбор ухода' : project.slug === 'cudgi'
     ? 'Первый экран CUDGI: fashion-фотография и вход в коллекцию'
-    : 'Сравнение рекламных примеров NEO и AURA в Brand Builder',
+    : 'Библиотека рекламных примеров NEO, AURA и KERN в Brand Builder',
   role: project.slug === 'brand-builder' ? 'Дизайн продукта и разработка' : 'Веб-дизайн и разработка',
   format: project.slug === 'gran' ? 'Авторский концепт сайта' : project.slug === 'cudgi' ? 'Демонстрация сайта' : 'Интерактивный прототип',
-  coverCaption: project.slug === 'gran' ? 'Главная / Подбор ухода' : project.slug === 'cudgi' ? 'Главная / Коллекция' : 'Сравнение / Учебные примеры',
+  coverCaption: project.slug === 'gran' ? 'Главная / Подбор ухода' : project.slug === 'cudgi' ? 'Главная / Коллекция' : 'Библиотека / Учебные примеры',
 }));
