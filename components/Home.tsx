@@ -183,7 +183,7 @@ export function Home() {
       <section id="work" className="work-section grid-surface">
         <div className="section-meta">
           <span>Избранные проекты</span>
-          <span>2026 / 02</span>
+          <span>2026 / {String(projects.length).padStart(2, '0')}</span>
         </div>
         <div className="work-heading reveal">
           <h2>
