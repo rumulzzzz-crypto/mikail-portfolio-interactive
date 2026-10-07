@@ -26,7 +26,7 @@ export default async function Case({
   const { slug } = await params;
   const p = projects.find((p) => p.slug === slug);
   if (!p) notFound();
-  const next = projects.find((x) => x.slug !== p.slug)!;
+  const next = projects[(projects.findIndex((x) => x.slug === p.slug) + 1) % projects.length];
   const study = caseStudies[p.slug];
   return (
     <main id="main">
@@ -51,7 +51,7 @@ export default async function Case({
           </div>
           <div>
             <h2>Формат</h2>
-            <p>{p.slug === "cudgi" ? "Публичная демонстрация сайта" : "Интерактивный прототип приложения"}</p>
+            <p>{p.format}</p>
           </div>
           <ActionLink href={p.url} external>Открыть демо</ActionLink>
         </div>

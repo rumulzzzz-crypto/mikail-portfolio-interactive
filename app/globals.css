@@ -1949,6 +1949,11 @@ html[data-effects="off"] .portrait img { filter: brightness(.58) saturate(0); }
   --project-surface: #191d2b;
   --project-paper: #f5f7fa;
 }
+.project--gran, .case--gran {
+  --project-accent: #c9a36b;
+  --project-surface: #171614;
+  --project-paper: #121211;
+}
 .projects { align-items: stretch; gap: clamp(30px, 4vw, 64px); }
 .project { display: flex; flex-direction: column; min-width: 0; }
 .project .project-image { background: var(--project-paper); padding: 0; border-color: var(--line); }
