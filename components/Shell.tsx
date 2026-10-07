@@ -366,7 +366,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <a href="https://t.me/rumul" target="_blank" rel="noreferrer">
               Telegram ↗
             </a>
-            <a href="mailto:rumulzzzzz@gmail.com">Email ↗</a>
+            <a href="mailto:rumulzzzz@gmail.com">Email ↗</a>
             <span>Микаил Дадашов / 2026</span>
           </div>
         </div>
@@ -418,7 +418,7 @@ export function Footer() {
         <a href="https://t.me/rumul" target="_blank" rel="noreferrer">
           <Scramble>Telegram</Scramble> ↗
         </a>
-        <a href="mailto:rumulzzzzz@gmail.com">
+        <a href="mailto:rumulzzzz@gmail.com">
           <Scramble>Написать на почту</Scramble> ↗
         </a>
         <Link href="/#main">Наверх ↑</Link>
