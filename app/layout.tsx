@@ -5,15 +5,15 @@ import { ProjectNavigation } from "@/components/ProjectLink";
 import { Shell } from "@/components/Shell";
 export const metadata: Metadata = {
   title: {
-    default: "Микаил Дадашов — веб-дизайн и разработка",
+    default: "Микаил Дадашов — веб-дизайнер и разработчик сайтов",
     template: "%s — Микаил Дадашов",
   },
   description:
-    "Микаил Дадашов — веб-дизайн и разработка сайтов. От идеи до работающего интерфейса: структура, визуальный характер и адаптивная реализация. Кейсы CUDGI и Brand Builder.",
+    "Дизайн и разработка лендингов, небольших сайтов и интерфейсов. Работы Микаила Дадашова: CUDGI, Brand Builder и «Грань».",
   icons: { icon: "/icon.svg?v=md-2" },
   openGraph: {
-    title: "Микаил Дадашов — веб-дизайн и разработка",
-    description: "Веб-дизайн и разработка сайтов с характером и понятным путём к действию. Кейсы CUDGI и Brand Builder.",
+    title: "Микаил Дадашов — веб-дизайнер и разработчик сайтов",
+    description: "Дизайн и разработка лендингов, небольших сайтов и интерфейсов. Работы Микаила Дадашова: CUDGI, Brand Builder и «Грань».",
     locale: "ru_RU",
     type: "website",
   },

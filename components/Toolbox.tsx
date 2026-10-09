@@ -10,10 +10,10 @@ import { BrandMark } from "./BrandMark";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const tools = [
-  { name: "Figma", kind: "figma", text: "Структура страниц и прототипы перед разработкой" },
-  { name: "Codex", kind: "codex", text: "Реализация, адаптивная вёрстка и взаимодействия" },
-  { name: "Photoshop", kind: "photoshop", text: "Подготовка фотографий и графики для страниц" },
-  { name: "Higgsfield", kind: "higgsfield", text: "Визуальные концепции, AI-изображения и видео" },
+  { name: "Figma", kind: "figma", text: "Структура страницы, макеты и прототипы." },
+  { name: "Codex", kind: "codex", text: "Разработка сайта и доработка поведения элементов." },
+  { name: "Photoshop", kind: "photoshop", text: "Подготовка фотографий и графики." },
+  { name: "Higgsfield", kind: "higgsfield", text: "Визуальные идеи и изображения с помощью ИИ." },
 ];
 
 function ToolMark({ kind }: { kind: string }) {
